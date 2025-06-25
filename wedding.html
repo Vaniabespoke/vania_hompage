@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wedding Package - VANIA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* 기본 스타일 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Serif KR', serif; color: #111; background-color: #fff; line-height: 1.8; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+    
+    /* [수정] 헤더 z-index */
+    header { display: flex; align-items: center; padding: 20px 30px; font-size: 1.4rem; font-weight: bold; border-bottom: 1px solid #eee; position: fixed; top: 0; left: 0; width: 100%; background-color: white; z-index: 1000; }
+    .header-content { display: flex; align-items: center; gap: 16px; }
+    .menu-icon { font-size: 1.6rem; cursor: pointer; }
+    .logo-link { font-weight: bold; font-size: 1.4rem; text-decoration: none; color: inherit; }
+    .fullscreen-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: black; color: white; display: flex; flex-direction: column; align-items: flex-start; padding: 60px; z-index: 1001; opacity: 0; pointer-events: none; transform: translateY(-20px); transition: all 0.4s ease-in-out; }
+    .fullscreen-menu.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .fullscreen-menu ul { margin-top: 60px; list-style: none; padding: 0; font-size: 2rem; }
+    .fullscreen-menu ul li { margin-bottom: 30px; }
+    .fullscreen-menu ul li a { color: white; text-decoration: none; }
+    .fullscreen-menu .close-btn { position: absolute; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; background: none; border: none; color: white; }
+    .layout { display: flex; flex: 1; margin-top: 71px; }
+    nav { width: 250px; border-right: 1px solid #eee; padding: 2rem 1rem; position: sticky; top: 71px; height: calc(100vh - 71px); align-self: flex-start; }
+    nav .title { font-weight: bold; font-size: 1rem; color: #999; margin-bottom: 2rem; }
+    nav ul { list-style: none; padding: 0; }
+    nav ul li { margin-bottom: 1.5rem; }
+    nav ul li a { text-decoration: none; font-weight: bold; color: #111; }
+    nav ul li a.active { border-bottom: 2px solid black; }
+    main { flex: 1; }
+    section { padding: 120px 40px; }
+    .section-container { max-width: 1200px; margin: auto; }
+    h1, h2, h3, h4 { font-weight: 700; }
+    h2 { font-size: 2.5rem; margin-bottom: 20px; }
+    h3 { font-size: 1.8rem; margin-bottom: 30px; }
+    p { font-size: 1.1rem; margin-bottom: 20px; color: #555; }
+    .hero { position: relative; height: 60vh; background: url('./assets/wedding/wedding_main.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 0; }
+    .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
+    .hero h1 { font-size: 3.5rem; position: relative; z-index: 1; }
+    .intro-text { text-align: center; max-width: 800px; margin: auto; }
+    
+    .tab-nav { text-align: center; margin-bottom: 80px; border-bottom: 1px solid #eee; padding-bottom: 30px; }
+    .tab-nav button { font-size: 1.5rem; font-weight: 600; color: #888; text-decoration: none; padding: 15px 30px; margin: 0 10px; border-radius: 8px; transition: all 0.3s ease; background: none; border: none; cursor: pointer; }
+    .tab-nav button:hover, .tab-nav button.active { color: #111; background-color: #f5f5f5; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .content-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center; }
+    .content-grid.reverse { grid-template-columns: 1.2fr 1fr; }
+    .content-grid.reverse .text-content { grid-column: 2; grid-row: 1; }
+    .text-content p.subtitle { color: #888; font-size: 1rem; margin-bottom: 10px; }
+    .visual-content img { width: 100%; border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+    .package-details { border-top: 1px solid #eee; margin-top: 30px; padding-top: 30px; }
+    .package-item { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; }
+    .package-item h4 { font-size: 1.2rem; margin: 0; }
+    .package-item p { font-size: 1rem; color: #777; margin: 0; }
+    .price-highlight { text-align: right; }
+    .original-price { font-size: 1.2rem; color: #aaa; text-decoration: line-through; }
+    .sale-price { font-size: 2.2rem; color: #c0392b; font-weight: bold; }
+    .procedure-list { list-style: none; padding-left: 0; }
+    .procedure-list li { padding-left: 40px; position: relative; margin-bottom: 30px; }
+    .procedure-list li::before { content: "0" counter(step); counter-increment: step; position: absolute; left: 0; top: -5px; font-size: 1.5rem; font-weight: 700; color: #ddd; }
+    .procedure-list h4 { font-size: 1.3rem; margin-bottom: 5px; }
+    .procedure-list p { font-size: 1rem; color: #666; margin: 0; }
+    .cta { text-align: center; background-color: #f8f8f8; }
+    .cta a { display: inline-block; margin-top: 20px; padding: 15px 30px; background: black; color: white; text-decoration: none; font-weight: bold; border-radius: 5px; }
+    footer { text-align: center; font-size: 0.9rem; color: #666; padding: 40px 20px 60px; border-top: 1px solid #eee; background-color: #fafafa; }
+    
+    /* [수정] 최상단 이동 버튼 z-index */
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 999;
+      line-height: 50px;
+      text-align: center;
+    }
+    #scrollToTopBtn.show {
+      display: block;
+      opacity: 1;
+    }
+    #scrollToTopBtn:hover {
+        background-color: black;
+        transform: scale(1.1);
+    }
+
+    @media (max-width: 992px) {
+        .content-grid, .content-grid.reverse { grid-template-columns: 1fr; }
+        .content-grid.reverse .text-content { grid-column: 1; grid-row: auto; }
+        .visual-content { margin-top: 40px; }
+    }
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      nav { width: 100%; border-right: none; border-bottom: 1px solid #eee; padding: 1rem; position: static; height: auto; }
+      main { margin-top: 0; }
+      section { padding: 80px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="menu-icon" onclick="openMenu()">☰</div>
+      <a class="logo-link" href="index.html">VANIA</a>
+    </div>
+  </header>
+
+  <div class="fullscreen-menu" id="fullscreenMenu">
+    <button class="close-btn" onclick="closeMenu()">✕</button>
+    <ul>
+      <li><a href="brand.html">ABOUT</a></li>
+      <li><a href="bespoke-suit.html">SERVICE</a></li>
+      <li><a href="elements.html">THE MAKING</a></li>
+      <li><a href="reservation.html">RESERVATION</a></li>
+      <li><a href="lookbook.html">LOOKBOOK</a></li>
+    </ul>
+    <img src="./assets/overlay_sketch.png" alt="Overlay Image" style="position:fixed; bottom: 150px; right: 150px; width: 400px; opacity: 0.85; z-index: -1;" />
+  </div>
+
+  <div class="layout">
+    <nav>
+      <div class="title">SERVICE</div>
+      <ul>
+        <li><a href="bespoke-suit.html">BESPOKE SUIT</a></li>
+        <li><a class="active" href="wedding-package.html">WEDDING PACKAGE</a></li>
+        <li><a href="rental.html">RENTAL</a></li>
+      </ul>
+    </nav>
+    <main>
+      <section class="hero" style="background-image: url('./assets/wedding/wedding_main.jpg');">
+        <h1>WEDDING PACKAGE</h1>
+      </section>
+      
+      <div class="section-container">
+        <section class="intro-text">
+          <h2>가장 빛나는 순간을 위한 약속</h2>
+          <p>생애 단 하루, 가장 완벽한 모습으로 기억되고 싶은 신랑님을 위해 VANIA는 두 가지 특별한 웨딩 패키지를 제안합니다. 당신의 가장 빛나는 순간을 함께 준비합니다.</p>
+        </section>
+
+        <div class="tab-nav">
+          <button class="tab-link active" data-tab="bespoke-package">예복 맞춤 패키지</button>
+          <button class="tab-link" data-tab="rental-package">턱시도 대여 패키지</button>
+        </div>
+        
+        <div id="bespoke-package" class="tab-content active">
+          <section class="content-grid reverse" style="padding-top:0;">
+            <div class="visual-content">
+                <img src="./assets/wedding/bespoke_package_visual.jpg" alt="예복 맞춤 패키지 비주얼">
+            </div>
+            <div class="text-content">
+                <p class="subtitle">BESPOKE & RENTAL PACKAGE</p>
+                <h2>예복 맞춤 패키지</h2>
+                <p>평생 간직할 나만의 맞춤 예복과 웨딩 촬영을 위한 턱시도 대여를 한번에 해결하는 가장 합리적인 선택입니다.</p>
+                <div class="package-details">
+                    <div class="package-item"><h4>맞춤 예복 1벌</h4><p>이태리/영국 원단 중 선택</p></div>
+                    <div class="package-item"><h4>촬영용 턱시도 2벌 대여</h4><p>다양한 디자인 선택 가능</p></div>
+                    <div class="package-item"><h4>맞춤 셔츠 & 타이</h4><p>몸에 꼭 맞는 셔츠와 타이 증정</p></div>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                    <div class="price-highlight">
+                        <p style="font-size:1.2rem; color: #555; text-align:right; margin:0;">최고급 원단을 합리적인 가격으로 제안합니다.</p>
+                        <span class="sale-price" style="font-size: 1.8rem;">상담 후 결정</span>
+                    </div>
+                </div>
+            </div>
+          </section>
+          <section class="content-grid" style="padding-bottom:0;">
+             <div class="text-content">
+                  <p class="subtitle">BESPOKE PROCESS</p>
+                  <h2>맞춤 예복 이용 절차</h2>
+                  <ol class="procedure-list" style="counter-reset: step;">
+                    <li><h4>상담 및 원단 선택</h4><p>전문가와 함께 체형, 스타일, 예산을 고려하여 최적의 원단과 디자인을 결정합니다.</p></li>
+                    <li><h4>1차 가봉 및 체형 보완</h4><p>제작된 가봉복을 입어보며, 디테일한 체형 보완과 디자인 수정을 진행합니다.</p></li>
+                    <li><h4>턱시도 대여 및 최종 완성</h4><p>촬영일에 맞춰 대여복을 픽업하고, 본식일에 맞춰 완벽하게 완성된 맞춤 예복을 입습니다.</p></li>
+                  </ol>
+              </div>
+              <div class="visual-content">
+                <img src="./assets/wedding/bespoke_process_visual.jpg" alt="맞춤 예복 이용절차 비주얼">
+            </div>
+          </section>
+        </div>
+        
+        <div id="rental-package" class="tab-content">
+          <section class="content-grid" style="padding-top:0;">
+            <div class="text-content">
+                <p class="subtitle">ALL-INCLUSIVE RENTAL PACKAGE</p>
+                <h2>턱시도 대여 패키지</h2>
+                <p>신랑님께서 가장 빛나는 순간에만 집중하실 수 있도록, 필요한 모든 것을 세심하게 준비했습니다. 촬영부터 본식까지, VANIA가 함께합니다.</p>
+                <div class="package-details">
+                    <div class="package-item"><h4>웨딩촬영 & 본식 (총 3벌)</h4><p>촬영용 2벌, 본식용 1벌</p></div>
+                    <div class="package-item"><h4>셔츠·구두 대여</h4><p>일반 또는 키높이 선택 가능</p></div>
+                    <div class="package-item"><h4>프리미엄 액세서리</h4><p>보타이, 넥타이, 행커치프 등</p></div>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                    <div class="price-highlight">
+                        <span class="original-price">810,000</span>
+                        <span class="sale-price">550,000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="visual-content">
+                <img src="./assets/wedding/wedding_package_visual.jpg" alt="턱시도 대여 패키지 비주얼">
+            </div>
+          </section>
+          <section class="content-grid reverse" style="padding-bottom:0;">
+             <div class="visual-content">
+                <img src="./assets/wedding/wedding_process_visual.jpg" alt="턱시도 대여 이용절차 비주얼">
+            </div>
+            <div class="text-content">
+                <p class="subtitle">RENTAL PROCESS</p>
+                <h2>턱시도 대여 이용 절차</h2>
+                <ol class="procedure-list" style="counter-reset: step;">
+                  <li><h4>방문 및 피팅 예약</h4><p>수원점 또는 안산점에 방문 예약을 하고, 편안한 시간에 오셔서 다양한 의상을 입어봅니다.</p></li>
+                  <li><h4>의상 선택 및 예약 확정</h4><p>마음에 드는 의상을 촬영일과 본식일에 맞춰 예약하고, 필요 시 사이즈 조정을 진행합니다.</p></li>
+                  <li><h4>픽업 및 반납</h4><p>행사일에 맞춰 준비된 의상을 픽업하고, 예식이 끝난 후 편하게 반납합니다.</p></li>
+                </ol>
+            </div>
+          </section>
+        </div>
+        
+        <section class="cta">
+          <h2>가장 특별한 날, VANIA와 함께하세요.</h2>
+          <a href="reservation.html">예약 및 상담하기</a>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
+
+  <footer>
+    VANIA<br/>
+    상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br/>
+    주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
+  </footer>
+
+  <script>
+    function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
+    function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+      
+      if (scrollToTopBtn) {
+        window.onscroll = function() {
+          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            scrollToTopBtn.classList.add("show");
+          } else {
+            scrollToTopBtn.classList.remove("show");
+          }
+        };
+        
+        scrollToTopBtn.addEventListener("click", function() {
+          window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+      }
+
+      const tabLinks = document.querySelectorAll('.tab-link');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const tabId = link.getAttribute('data-tab');
+
+          tabLinks.forEach(item => item.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+
+          link.classList.add('active');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

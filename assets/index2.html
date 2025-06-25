@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="VANIA 맞춤정장 브랜드의 공식 홈페이지입니다."/>
+  <title>VANIA BESPOKE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #111;
+    }
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      font-weight: 800;
+      font-size: 1.4rem;
+      z-index: 9999;
+      gap: 8px;
+      height: 40px;
+      background-color: transparent;
+      color: white;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .top-nav.scrolled {
+      background-color: white;
+      color: black;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .top-nav.menu-open {
+      background-color: transparent !important;
+      color: white !important;
+    }
+    .menu-icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .fullscreen-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 60px;
+      z-index: 9998;
+      opacity: 0;
+      transform: translateY(-30px);
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .fullscreen-menu.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .fullscreen-menu ul {
+      margin-top: 100px;
+      list-style: none;
+      padding: 0;
+      font-size: 2.8rem;
+    }
+    .fullscreen-menu ul li {
+      margin-bottom: 30px;
+    }
+    .fullscreen-menu ul li a {
+      font-size: 2.2rem;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      font-size: 2.8rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      background: url('./assets/main.jpg') no-repeat center center/cover;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 12vh;
+      padding-left: 5vw;
+      padding-right: 5vw;
+    }
+    .hero-text {
+      color: #fff;
+      z-index: 10;
+      line-height: 1.4;
+    }
+    .hero-text h2 { font-size: 2.2rem; font-weight: 700; margin: 0 0 8px 0; }
+    .hero-text p { font-size: 1.1rem; font-weight: 400; margin: 0; }
+    .section {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 100vh;
+    }
+    .section img {
+      width: 50%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .brand-intro {
+      padding: 4rem 2rem;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+    .brand-intro h2 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .brand-intro p {
+      font-size: 1rem;
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto;
+      color: #444;
+    }
+    .reveal-wrap {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+    .reveal-left,
+    .reveal-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      transition: clip-path 0.4s ease;
+    }
+    .reveal-left { clip-path: inset(0 50% 0 0); z-index: 2; }
+    .reveal-right { clip-path: inset(0 0 0 50%); z-index: 1; }
+    .reveal-left img,
+    .reveal-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .reveal-text {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      padding: 2rem;
+      z-index: 5;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .reveal-left .reveal-text { left: 5%; text-align: left; }
+    .reveal-right .reveal-text { right: 5%; text-align: right; }
+    .reveal-text h2 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .reveal-text p { font-size: 1rem; margin-bottom: 1.5rem; }
+    .reveal-text a button {
+      padding: 0.8rem 1.5rem;
+      background: white;
+      color: #111;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 1rem;
+    }
+    .reveal-text a button:hover { background: #f0f0f0; }
+    @media (max-width: 768px) {
+      .section { flex-direction: column; height: auto; }
+      .section img { width: 100%; height: auto; }
+      .hero-text h2 { font-size: 6vw; }
+      .hero-text p { font-size: 4vw; }
+      .reveal-wrap { flex-direction: column; height: auto; }
+      .reveal-left, .reveal-right {
+        position: relative;
+        clip-path: none !important;
+        height: auto;
+      }
+      .reveal-left img, .reveal-right img { height: auto; }
+      .reveal-text {
+        position: relative;
+        transform: none;
+        top: auto;
+        text-align: center !important;
+        padding: 1.5rem;
+        color: #111;
+        text-shadow: none;
+      }
+      .reveal-text a button {
+        width: 100%;
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="menu-icon" onclick="openMenu()">☰</div>
+    <a class="logo" href="index.html" style="text-decoration: none; color: inherit;">VANIA</a>
+  </header>
+  <div class="fullscreen-menu" id="fullscreenMenu">
+    <button class="close-btn" onclick="closeMenu()">✕</button>
+    <ul>
+      <li><a href="#">ABOUT</a></li>
+      <li><a href="#">SERVICE</a></li>
+      <li><a href="#">BESPOKE</a></li>
+      <li><a href="https://reserve.vania.co.kr">RESERVATION</a></li>
+      <li><a href="#">LOOKBOOK</a></li>
+    </ul>
+    <img alt="Overlay" class="overlay-img" src="./assets/overlay_sketch.png"/>
+  </div>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h2>당신만을 위한 맞춤정장</h2>
+      <p>VANIA BESPOKE</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <img alt="서브 이미지 1" src="./assets/sub1.jpg"/>
+    <img alt="서브 이미지 2" src="./assets/sub2.jpg"/>
+  </section>
+
+  <section class="brand-intro">
+    <h2>브랜드 이야기</h2>
+    <p>VANIA는 지난 8년간 수원과 안산에서 2만 명 이상의 고객에게 정장을 제공해왔습니다.<br/>
+      고객 한 분, 한 분의 특별한 순간을 위해 정성을 다해 디자인합니다.</p>
+  </section>
+
+  <section class="reveal-wrap" id="reveal">
+    <div class="reveal-left">
+      <img alt="Tailored" src="./assets/tailored.jpg"/>
+      <div class="reveal-text">
+        <h2>TAILORED</h2>
+        <p>클래식한 테일러드 수트의 품격을 경험해보세요.</p>
+        <a href="http://reserve.vania.co.kr"><button>예약하기</button></a>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <img alt="Rental" src="./assets/rental.jpg"/>
+      <div class="reveal-text">
+        <h2>RENTAL</h2>
+        <p>웨딩, 촬영, 행사에 맞는 최적의 대여 서비스를 제공합니다.</p>
+        <a href="/rental"><button>대여 문의</button></a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const nav = document.querySelector(".top-nav");
+      const menu = document.getElementById("fullscreenMenu");
+      const openBtn = document.querySelector(".menu-icon");
+      const closeBtn = document.querySelector(".close-btn");
+
+      if (openBtn && menu && nav) {
+        openBtn.addEventListener("click", () => {
+          menu.classList.add("active");
+          nav.classList.add("menu-open");
+        });
+      }
+
+      if (closeBtn && menu && nav) {
+        closeBtn.addEventListener("click", () => {
+          menu.classList.remove("active");
+          nav.classList.remove("menu-open");
+        });
+      }
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 10) {
+          nav.classList.add("scrolled");
+        } else {
+          nav.classList.remove("scrolled");
+        }
+      });
+
+      const revealWrap = document.getElementById('reveal');
+      const left = document.querySelector('.reveal-left');
+      const right = document.querySelector('.reveal-right');
+      if (revealWrap && left && right) {
+        revealWrap.addEventListener('mousemove', (e) => {
+          const percent = e.clientX / window.innerWidth;
+          left.style.clipPath = `inset(0 ${percent * 100}% 0 0)`;
+          right.style.clipPath = `inset(0 0 0 ${(1 - percent) * 100}%)`;
+        });
+        revealWrap.addEventListener('mouseleave', () => {
+          left.style.clipPath = 'inset(0 50% 0 0)';
+          right.style.clipPath = 'inset(0 0 0 50%)';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
