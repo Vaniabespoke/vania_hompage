@@ -5,7 +5,6 @@
   <title>Location - VANIA</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* 다른 페이지와 동일한 기본 스타일 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Noto Serif KR', serif; color: #111; background-color: #fff; line-height: 1.8; display: flex; flex-direction: column; min-height: 100vh; }
@@ -19,21 +18,8 @@
     .fullscreen-menu ul li { margin-bottom: 30px; }
     .fullscreen-menu ul li a { color: white; text-decoration: none; }
     .fullscreen-menu .close-btn { position: absolute; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; background: none; border: none; color: white; }
-    .layout {
-  display: flex;
-  flex: 1;
-  margin-top: 71px;
-}
-nav {
-  width: 250px;
-  border-right: 1px solid #eee;
-  padding: 2rem 1rem;
-  /* --- 핵심 수정 --- */
-  position: sticky; /* 스크롤 시 특정 위치에 고정 */
-  top: 71px;      /* 상단 헤더 높이(71px)만큼 떨어진 위치에 고정 */
-  height: calc(100vh - 71px); /* 화면 높이에서 헤더 높이를 뺀 만큼의 높이를 차지 */
-  align-self: flex-start; /* 부모(flex)의 시작점에 정렬 */
-}
+    .layout { display: flex; flex: 1; margin-top: 71px; }
+    nav { width: 250px; border-right: 1px solid #eee; padding: 2rem 1rem; position: sticky; top: 71px; height: calc(100vh - 71px); align-self: flex-start; }
     nav .title { font-weight: bold; font-size: 1rem; color: #999; margin-bottom: 2rem; }
     nav ul { list-style: none; padding: 0; }
     nav ul li { margin-bottom: 1.5rem; }
@@ -43,11 +29,9 @@ nav {
     section { padding: 100px 40px; max-width: 1200px; margin: auto; }
     h1, h2, h3 { font-weight: 700; margin-bottom: 20px; }
     p { font-size: 1.1rem; margin-bottom: 20px; color: #555;}
-    
     .hero { position: relative; height: 50vh; background: url('./assets/location/location_main.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
     .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
     .hero h1 { font-size: 3.5rem; position: relative; z-index: 1; }
-    
     .location-section { display: flex; flex-wrap: wrap; gap: 60px; align-items: center; }
     .location-section:not(:last-child) { padding-bottom: 100px; margin-bottom: 100px; border-bottom: 1px solid #f0f0f0; }
     .location-section:nth-child(even) { flex-direction: row-reverse; }
@@ -55,14 +39,12 @@ nav {
     .map-container { width: 100%; height: 400px; border-radius: 10px; background-color: #f7f7f7; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
     .location-info h3 { font-size: 2rem; }
     .location-info p { line-height: 1.7; margin-bottom: 1rem; }
-    
     .cta { text-align: center; background-color: #f8f8f8; }
     .cta a { display: inline-block; margin-top: 20px; padding: 15px 30px; background: black; color: white; text-decoration: none; font-weight: bold; border-radius: 5px; }
     footer { text-align: center; font-size: 0.9rem; color: #666; padding: 40px 20px 60px; border-top: 1px solid #eee; background-color: #fafafa; }
     #scrollToTopBtn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background-color: rgba(0, 0, 0, 0.7); color: white; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 100; line-height: 50px; text-align: center; }
     #scrollToTopBtn.show { display: block; opacity: 1; }
     #scrollToTopBtn:hover { background-color: black; transform: scale(1.1); }
-    
     @media (max-width: 768px) {
       .layout { flex-direction: column; }
       nav { width: 100%; border-right: none; border-bottom: 1px solid #eee; padding: 1rem; }
@@ -85,7 +67,7 @@ nav {
       <li><a href="brand.html">ABOUT</a></li>
       <li><a href="bespoke-suit.html">SERVICE</a></li>
       <li><a href="elements.html">THE MAKING</a></li>
-        <li><a href="reservation.html">RESERVATION</a></li>
+      <li><a href="reservation.html">RESERVATION</a></li>
     </ul>
     <img src="./assets/overlay_sketch.png" alt="Overlay Image" style="position:fixed; bottom: 150px; right: 150px; width: 400px; opacity: 0.85; z-index: -1;" />
   </div>
@@ -130,7 +112,7 @@ nav {
       </section>
     </main>
   </div>
-  
+
   <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
 
   <footer>
@@ -139,13 +121,17 @@ nav {
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
 
-  <!-- 네이버 지도 SDK (Client ID는 예시입니다. 본인의 ID로 교체해야 합니다) -->
+  <!-- 네이버 지도 SDK 및 안정화된 초기화 -->
   <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1cygaiwutw"></script>
   <script>
-    function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
-    function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
+    function openMenu() {
+      document.getElementById("fullscreenMenu")?.classList.add("active");
+    }
+    function closeMenu() {
+      document.getElementById("fullscreenMenu")?.classList.remove("active");
+    }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window.onload = function () {
       function createMap(mapId, lat, lng, storeName) {
         if (!window.naver || !window.naver.maps) return;
         const coords = new naver.maps.LatLng(lat, lng);
@@ -164,23 +150,25 @@ nav {
         infoWindow.open(map, marker);
       }
 
-      // 지도 생성 (페이지 로딩 후)
-      createMap('map-suwon', 37.2635676, 127.0282048, '바니아 수원점');
-      createMap('map-ansan', 37.3189329, 126.8372392, '바니아 안산점');
+      setTimeout(() => {
+        createMap('map-suwon', 37.2635676, 127.0282048, '바니아 수원점');
+        createMap('map-ansan', 37.3189329, 126.8372392, '바니아 안산점');
+      }, 300);
 
-      // 최상단 이동 버튼
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (scrollToTopBtn) {
-        window.onscroll = function() {
+        window.onscroll = function () {
           if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
             scrollToTopBtn.classList.add("show");
           } else {
             scrollToTopBtn.classList.remove("show");
           }
         };
-        scrollToTopBtn.addEventListener("click", function() { window.scrollTo({top: 0, behavior: 'smooth'}); });
+        scrollToTopBtn.addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       }
-    });
+    };
   </script>
 </body>
 </html>
