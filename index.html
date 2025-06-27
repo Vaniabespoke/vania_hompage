@@ -27,7 +27,6 @@
     .header-content { display: flex; align-items: center; gap: 16px; }
     .menu-icon { font-size: 1.6rem; cursor: pointer; }
 
-    /* MOD: 어두운 배경용 헤더 스타일 추가 */
     header.scrolled.header-on-dark {
         color: white;
         text-shadow: 0 1px 3px rgba(0,0,0,0.5);
@@ -105,91 +104,66 @@
     .fade-in-left { animation: fadeInLeft 1s ease-out both; }
     .fade-in-right { animation: fadeInRight 1s ease-out both; }
 
-    /* 0% 정책 섹션 디자인 개선 */
+    /* 0% 정책 섹션 디자인 */
     .no-fee-section { 
-        flex-direction: column; 
-        position: relative; 
-        overflow: hidden; 
-        background-image: url('./assets/policy_bg.jpg'); 
-        background-position: center center; 
-        background-size: cover; 
-        background-repeat: no-repeat;
-        color: #fff;
-    }
-    .no-fee-section::before, .no-fee-section::after { 
-        content: ''; 
-        position: absolute; 
-        inset: 0; 
+        flex-direction: column;
+        background: url('./assets/policy_bg.jpg') no-repeat right center / cover;
+        color: #333;
+        position: relative;
     }
     .no-fee-section::before {
-        background: linear-gradient(to right, 
-            rgba(0, 0, 0, 0.8) 0%, 
-            transparent 40%, 
-            transparent 60%, 
-            rgba(0, 0, 0, 0.8) 100%
-        );
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: rgba(255, 255, 255, 0.9);
+        z-index: 0;
+    }
+    .no-fee-content {
+        max-width: 960px;
+        width: 90%;
+        text-align: left;
+        background: none;
+        border: none;
+        backdrop-filter: none;
+        position: relative;
         z-index: 1;
     }
-    .no-fee-section::after {
-        background: linear-gradient(to right, 
-            transparent 25%,
-            rgba(255, 255, 255, 0.15) 40%,
-            rgba(255, 255, 255, 0.15) 60%,
-            transparent 75%
-        );
-        z-index: 2;
-    }
-    .no-fee-content { 
-        position: relative; 
-        z-index: 3;
-        background: rgba(34, 34, 34, 0.5); 
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 16px;
-        padding: 3rem 3.5rem;
-        max-width: 800px;
-        text-align: left;
-    }
-    .no-fee-content h2 {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        font-size: 2.8rem;
-        font-weight: 700;
+    .no-fee-content .pre-header {
+        font-size: 0.9rem;
+        color: #888;
         margin-bottom: 0.5rem;
     }
-    .no-fee-content h2 .percent { 
-        font-size: 8rem;
-        font-weight: 900;
-        color: #c0392b; 
-        line-height: 1;
-    }
-    .no-fee-content .subtitle {
-        font-size: 1.1rem;
-        color: #ddd;
+    .no-fee-content h2 {
+        font-size: 2.6rem;
+        line-height: 1.5;
         margin-bottom: 3rem;
-        padding-left: 0.2rem;
+        font-weight: 700;
     }
-    .no-fee-content ul { 
-        list-style-type: none; 
-        padding: 0; 
-        margin: 0;
+    .no-fee-content h2 .highlight { color: #c0392b; }
+    .no-fee-content ol {
+        list-style: none;
+        padding-left: 0;
+        counter-reset: no-fee-counter;
+        max-width: 800px;
     }
-    .no-fee-content li { 
-        font-size: 1.1rem; 
-        margin-bottom: 1.2rem; 
-        color: #eee;
-        line-height: 1.7;
+    .no-fee-content li {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.8;
+        position: relative;
+        padding-left: 2.5em;
+        margin-bottom: 1.5rem;
     }
-    .no-fee-content li:last-child {
-        margin-bottom: 0;
-    }
-    .no-fee-content li::before { 
-        content: '✓'; 
-        color: #c0392b; 
-        font-weight: bold; 
-        margin-right: 15px; 
+    .no-fee-content li:last-child { margin-bottom: 0; }
+    .no-fee-content li::before {
+        counter-increment: no-fee-counter;
+        content: counter(no-fee-counter) ".";
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #333;
     }
 
 
@@ -203,12 +177,20 @@
     .section[data-anchor="trust-value"] .new-qa-container {
         margin-left: auto; margin-right: 15vw;
     }
-    .new-qa-image-side { flex: 0 0 auto; width: 220px; aspect-ratio: 9 / 16; border-radius: 12px; background-size: cover; background-position: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    .new-qa-image-side { 
+        flex: 0 0 auto; 
+        width: 220px; 
+        aspect-ratio: 9 / 16; 
+        border-radius: 12px; 
+        background-size: cover; 
+        background-position: center; 
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        transition: transform 0.4s ease;
+    }
+    .new-qa-container:hover .new-qa-image-side { transform: scale(1.05); }
     .qa-text-content { position: relative; flex: 1; text-align: left; padding-top: 7rem; }
     
-    .new-qa-container .qa-text-content {
-        max-width: 550px;
-    }
+    .new-qa-container .qa-text-content { max-width: 550px; }
 
     .qa-question {
         position: absolute;
@@ -222,10 +204,7 @@
         z-index: 2;
         line-height: 1;
     }
-    .qa-answer-block {
-        position: relative;
-        z-index: 1;
-    }
+    .qa-answer-block { position: relative; z-index: 1; }
     .qa-answer-block h2 {
         position: relative;
         font-size: 2.2rem;
@@ -248,21 +227,126 @@
     .new-qa-container.layout-reversed .qa-question { left: auto; right: 0; }
     .new-qa-container.layout-reversed .qa-answer-block h2::before { left: auto; right: 0; }
     
-    .youtube-section { background-color: #fff; flex-direction: column; }
-    .youtube-content { max-width: 1400px; width: 100%; padding: 40px; }
-    .youtube-content h2 { font-size: 2.2rem; margin-bottom: 60px; }
-    .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 30px; }
-    .video-card { text-align: center; }
-    .video-card h4 { margin-top: 15px; font-size: 1.2rem; }
-    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    /* 유튜브 섹션 */
+    .youtube-section { 
+        background-color: #f8f9fa; 
+        position: relative;
+        overflow: hidden;
+    }
+    .youtube-section::before {
+        content: 'YOUTUBE';
+        position: absolute;
+        z-index: 0;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20vw;
+        font-weight: 900;
+        color: #e9ecef;
+        pointer-events: none;
+        white-space: nowrap;
+        line-height: 1;
+    }
+    .youtube-content { 
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 6rem;
+        max-width: 1200px; 
+        width: 90%; 
+        padding: 40px 0; 
+        position: relative;
+    }
+    .youtube-text-content {
+        text-align: left;
+        margin-bottom: 0;
+        flex: 1;
+    }
+    .youtube-text-content h2 { 
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        position: relative;
+        padding-bottom: 20px;
+        line-height: 1.5;
+    }
+    .youtube-text-content h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transform: none;
+        width: 60px;
+        height: 3px;
+        background-color: #c0392b;
+    }
+    .youtube-text-content p {
+        font-size: 1.1rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0;
+    }
+    .video-grid { 
+        flex: 1.3;
+        display: grid; 
+        grid-template-columns: 1fr;
+        gap: 30px; 
+    }
+    .video-card { text-align: left; transition: transform 0.3s ease; }
+    .video-card:hover { transform: translateY(-8px); }
+    .video-card h4 { margin-top: 15px; font-size: 1.1rem; color: #333; }
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
     .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-    .quote-section { background: url('./assets/group_photo.jpg') no-repeat center center/cover; color: white; display: flex; justify-content: flex-start; align-items: center; }
-    .quote-section::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
-    .quote-content { position: relative; z-index: 2; text-align: left; padding: 0 5vw 0 15vw; }
-    blockquote { font-size: 1.5rem; font-style: normal; max-width: 800px; margin: 20px 0; line-height: 1.9; }
-    .quote-content h2 { font-size: 2rem; }
-    
+    /* MOD: 인용문 섹션 (새로운 디자인) */
+    .quote-section {
+        background: url('./assets/group_photo.jpg') no-repeat center center/cover;
+        position: relative;
+    }
+    .quote-section .fp-tableCell {
+        justify-content: flex-end;
+    }
+    .quote-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, rgba(0,0,0,0) 65%, rgba(0,0,0,0.9) 75%);
+        z-index: 1;
+    }
+    .quote-content-overlay {
+        position: relative;
+        z-index: 2;
+        color: #fff;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+        max-width: 33%;
+        width: 100%;
+        text-align: left;
+        padding: 0 4vw;
+    }
+    .quote-content-overlay h2 {
+        font-size: 1rem;
+        color: #ccc;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        font-family: 'Pretendard', sans-serif;
+    }
+    .quote-content-overlay blockquote {
+        font-size: 1.8rem;
+        font-family: 'Noto Serif KR', serif;
+        font-weight: 700;
+        line-height: 1.7;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+    .quote-content-overlay cite {
+        display: block;
+        text-align: right;
+        margin-top: 2rem;
+        font-style: normal;
+        color: #bbb;
+        font-size: 0.9rem;
+    }
+
     .reveal-wrap { padding: 0; background-color: #fff; overflow: hidden; }
     .reveal-inner { position: relative; width: 100%; height: 100%; }
     .reveal-left, .reveal-right { position: absolute; width: 100%; height: 100%; }
@@ -274,8 +358,20 @@
     .text-right { align-items: flex-end; }
     .reveal-text h2 { font-size: 2.5rem; margin-bottom: 1rem; }
     .reveal-text p { margin-bottom: 1.5rem; font-size: 1rem; }
-    .reveal-text button { padding: 0.8rem 1.5rem; background: #f0f0f0; color: #111; border: none; border-radius: 5px; font-weight: bold; font-family: 'Pretendard', sans-serif; cursor: pointer; transition: background-color 0.3s, color 0.3s; }
+    
+    .reveal-text button { 
+        padding: 0.8rem 1.5rem; background: #f0f0f0; color: #111; border: none; border-radius: 5px; 
+        font-weight: bold; font-family: 'Pretendard', sans-serif; cursor: pointer; 
+        transition: all 0.3s ease;
+    }
     .reveal-text button:hover { background-color: #c0392b; color: white; }
+    .reveal-text button::after {
+        content: ' →';
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .reveal-text button:hover::after { opacity: 1; }
+
 
     footer { padding: 40px; text-align: center; font-size: 0.9rem; }
     
@@ -284,8 +380,18 @@
     .mobile-card-text { color: #111; text-align: left; padding-top: 1rem; }
     .mobile-card-text h2 { font-size: 1.8rem !important; margin-bottom: 0.5rem; }
     .mobile-card-text p { font-size: 1rem !important; margin-bottom: 1rem; }
-    .mobile-card-text button { padding: 0.8rem 1.5rem; background: #f0f0f0; color: #111; border: none; border-radius: 5px; font-weight: bold; font-family: 'Pretendard', sans-serif; cursor: pointer; transition: background-color 0.3s, color 0.3s; }
+    .mobile-card-text button { 
+        padding: 0.8rem 1.5rem; background: #f0f0f0; color: #111; border: none; border-radius: 5px; 
+        font-weight: bold; font-family: 'Pretendard', sans-serif; cursor: pointer; 
+        transition: all 0.3s ease;
+    }
     .mobile-card-text button:hover { background-color: #c0392b; color: white; }
+    .mobile-card-text button::after {
+        content: ' →';
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .mobile-card-text button:hover::after { opacity: 1; }
     
     #scrollToTopBtn {
         position: fixed;
@@ -389,33 +495,18 @@
         }
         
         /* 0% 정책 섹션 모바일 */
-        .no-fee-section { 
-            background-image: none;
-            background: radial-gradient(circle at center, #4a4a4a 0%, #1a1a1a 80%);
+        .no-fee-section {
+            background-position: center bottom;
+            background-size: 100% auto;
         }
-        .no-fee-section::before, .no-fee-section::after {
-            display: none;
-        }
-        .no-fee-content {
-            padding: 2.5rem 2rem;
-            background: none;
-            border: none;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            text-align: left;
+        .no-fee-content .pre-header {
+            font-size: 0.8rem;
         }
         .no-fee-content h2 {
-            font-size: 2.2rem !important;
-            flex-wrap: wrap;
-        }
-        .no-fee-content h2 .percent {
-            font-size: 6rem !important;
-        }
-        .no-fee-content .subtitle {
-            margin-bottom: 2.5rem;
+            font-size: 2rem !important;
         }
         .no-fee-content li {
-            font-size: 1.05rem !important;
+            font-size: 1rem !important;
         }
 
         /* 새로운 Q&A 섹션 반응형 */
@@ -470,11 +561,62 @@
             width: 50px;
         }
         
-        .youtube-content { padding: 0; }
-        .video-grid { grid-template-columns: 1fr; }
+        /* 유튜브 섹션 모바일 */
+        .youtube-section .fp-tableCell { 
+            align-items: flex-start;
+        }
+        .youtube-section::before { display: none; }
+        .youtube-content { 
+            flex-direction: column; 
+            text-align: center; 
+            gap: 0; 
+            width: 100%;
+        }
+        .youtube-text-content { 
+            width: 100%; 
+            text-align: center; 
+            margin-bottom: 3rem;
+            flex: none;
+        }
+        .youtube-text-content h2 { 
+            font-size: 2rem !important; 
+            padding-bottom: 15px; 
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .youtube-text-content h2::after { 
+            left: 50%; 
+            transform: translateX(-50%); 
+        }
+        .youtube-text-content p { font-size: 1rem !important; }
+        .video-grid { 
+            grid-template-columns: 1fr; 
+            gap: 20px;
+            width: 100%;
+            flex: none;
+        }
+        .video-card { text-align: center; }
 
-        .quote-content { text-align: center; padding: 0; }
-        blockquote { font-size: 1.3rem; }
+        /* 인용문 섹션 모바일 */
+        .quote-section .fp-tableCell {
+            justify-content: center;
+        }
+        .quote-section::before {
+            background: rgba(0,0,0,0.6);
+        }
+        .quote-content-overlay {
+            max-width: 90%;
+            text-align: center;
+            padding-right: 0;
+        }
+        .quote-content-overlay blockquote {
+            border-left: none;
+            padding-left: 0;
+            font-size: 1.6rem;
+        }
+        .quote-content-overlay cite {
+            text-align: center;
+        }
 
         .reveal-inner { display: none !important; }
         .reveal-mobile-fallback { display: block !important; width: 100%; padding: 3rem 1.5rem; }
@@ -524,15 +666,15 @@
         </div>
     </div>
     
-    <div class="section no-fee-section" data-anchor="no-fee" data-theme="dark">
+    <div class="section no-fee-section" data-anchor="no-fee" data-theme="light">
         <div class="no-fee-content">
-            <h2>VANIA의 <span class="percent">0%</span> 정책</h2>
-            <p class="subtitle">우리는 플래너 수수료 없는 정직한 관계를 고집합니다.</p>
-            <ul>
+            <p class="pre-header">VANIA의 정직한 관계</p>
+            <h2>VANIA는 <span class="highlight">0% 플래너 수수료 원칙</span>으로<br>최고의 가치를 만듭니다</h2>
+            <ol>
                 <li>우리는 웨딩 플래너나 컨설팅 업체에 소개 비용을 지불하지 않습니다.</li>
                 <li>그 비용은 고스란히 더 좋은 원단과 공임에 투자됩니다.</li>
                 <li>오직 고객님의 만족과 추천만이 VANIA의 유일한 영업 방식입니다.</li>
-            </ul>
+            </ol>
         </div>
     </div>
     
@@ -576,9 +718,12 @@
         </div>
     </div>
     
-    <div class="section youtube-section" data-anchor="youtube">
+    <div class="section youtube-section" data-anchor="youtube" data-theme="light">
         <div class="youtube-content">
-            <h2>VANIA의 전문성, 영상으로 직접 확인하세요</h2>
+            <div class="youtube-text-content">
+                <h2>VANIA의 전문성,<br>영상으로 직접 확인하세요</h2>
+                <p>말로만 하지 않습니다. VANIA의 철학과 제작 과정을 직접 눈으로 확인하고 신뢰를 결정하세요.</p>
+            </div>
             <div class="video-grid">
                 <div class="video-card">
                     <div class="video-wrapper">
@@ -597,7 +742,11 @@
     </div>
 
     <div class="section quote-section" data-anchor="quote" data-theme="dark">
-        <div class="quote-content"><h2>결과로 증명하는 자신감</h2><blockquote>"첫 상담의 설렘이 마지막 옷을 입는 순간, 감동으로 이어지도록. VANIA는 당신의 가장 멋진 순간을 책임지고 완성할 것을 약속합니다."</blockquote><cite>– VANIA의 모든 장인 일동 –</cite></div>
+        <div class="quote-content-overlay">
+            <h2>결과로 증명하는 자신감</h2>
+            <blockquote>"첫 상담의 설렘이 마지막 옷을 입는 순간, 감동으로 이어지도록. VANIA는 당신의 가장 멋진 순간을 책임지고 완성할 것을 약속합니다."</blockquote>
+            <cite>– VANIA의 모든 장인 일동 –</cite>
+        </div>
     </div>
 
     <div class="section reveal-wrap" data-anchor="services" data-theme="dark" id="revealWrap">
@@ -664,14 +813,12 @@
             anchors: ['hero', 'intro-visual', 'no-fee', 'trust-fit', 'trust-value', 'trust-memory', 'youtube', 'quote', 'services', 'footer'],
             
             afterLoad: function(origin, destination, direction){
-                // 상단바 스크롤 스타일 처리
                 if (destination.anchor !== 'hero') {
                     header.classList.add('scrolled');
                 } else {
                     header.classList.remove('scrolled');
                 }
 
-                // 어두운 섹션 헤더 색상 처리
                 const theme = destination.item.getAttribute('data-theme');
                 if (theme === 'dark') {
                     header.classList.add('header-on-dark');
@@ -679,7 +826,6 @@
                     header.classList.remove('header-on-dark');
                 }
                 
-                // 최상단 이동 버튼 표시/숨김 처리
                 if (destination.index > 0) {
                     scrollTopBtn.classList.add('show');
                 } else {
