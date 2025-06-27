@@ -107,7 +107,7 @@
     /* 0% 정책 섹션 디자인 */
     .no-fee-section { 
         flex-direction: column;
-        background: url('./assets/policy_bg.jpg') no-repeat right center / cover;
+        background: url('./assets/policy_bg.jpg') no-repeat center center / cover;
         color: #333;
         position: relative;
     }
@@ -115,36 +115,40 @@
         content: '';
         position: absolute;
         inset: 0;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.92);
         z-index: 0;
     }
     .no-fee-content {
-        max-width: 960px;
+        max-width: 700px;
         width: 90%;
-        text-align: left;
-        background: none;
-        border: none;
-        backdrop-filter: none;
+        text-align: left; /* 좌측 정렬로 변경 */
         position: relative;
         z-index: 1;
     }
     .no-fee-content .pre-header {
         font-size: 0.9rem;
         color: #888;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
     }
     .no-fee-content h2 {
         font-size: 2.6rem;
-        line-height: 1.5;
-        margin-bottom: 3rem;
+        line-height: 1.6;
+        margin-bottom: 3.5rem;
         font-weight: 700;
+        color: #333;
     }
-    .no-fee-content h2 .highlight { color: #c0392b; }
+    .no-fee-content h2 .highlight {
+        color: #c0392b;
+        font-size: 4rem;
+        font-weight: 900;
+        vertical-align: -10%;
+        margin: 0 0.1em;
+    }
     .no-fee-content ol {
         list-style: none;
         padding-left: 0;
         counter-reset: no-fee-counter;
-        max-width: 800px;
+        max-width: 100%;
     }
     .no-fee-content li {
         font-size: 1.1rem;
@@ -497,13 +501,27 @@
         /* 0% 정책 섹션 모바일 */
         .no-fee-section {
             background-position: center bottom;
-            background-size: 100% auto;
+            background-size: cover;
+        }
+        .no-fee-content {
+            text-align: center;
         }
         .no-fee-content .pre-header {
-            font-size: 0.8rem;
+            text-align: center;
         }
         .no-fee-content h2 {
             font-size: 2rem !important;
+            line-height: 1.5;
+            margin-bottom: 3rem;
+        }
+        .no-fee-content h2 .highlight {
+            font-size: 3rem;
+        }
+        .no-fee-content ol {
+            max-width: 100%;
+            padding: 0 5%;
+            display: inline-block; /* 모바일에선 다시 중앙정렬을 위해 */
+            text-align: left;
         }
         .no-fee-content li {
             font-size: 1rem !important;
@@ -669,7 +687,7 @@
     <div class="section no-fee-section" data-anchor="no-fee" data-theme="light">
         <div class="no-fee-content">
             <p class="pre-header">VANIA의 정직한 관계</p>
-            <h2>VANIA는 <span class="highlight">0% 플래너 수수료 원칙</span>으로<br>최고의 가치를 만듭니다</h2>
+            <h2>VANIA는 <span class="highlight">0%</span> 플래너 수수료 원칙으로<br>최고의 가치를 만듭니다</h2>
             <ol>
                 <li>우리는 웨딩 플래너나 컨설팅 업체에 소개 비용을 지불하지 않습니다.</li>
                 <li>그 비용은 고스란히 더 좋은 원단과 공임에 투자됩니다.</li>
