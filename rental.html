@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rental - VANIA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* 다른 페이지와 동일한 기본 스타일 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Serif KR', serif; color: #111; background-color: #fff; line-height: 1.8; display: flex; flex-direction: column; min-height: 100vh; }
+    header { display: flex; align-items: center; padding: 20px 30px; font-size: 1.4rem; font-weight: bold; border-bottom: 1px solid #eee; position: fixed; top: 0; left: 0; width: 100%; background-color: white; z-index: 999; }
+    .header-content { display: flex; align-items: center; gap: 16px; }
+    .menu-icon { font-size: 1.6rem; cursor: pointer; }
+    .logo-link { font-weight: bold; font-size: 1.4rem; text-decoration: none; color: inherit; }
+    .fullscreen-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: black; color: white; display: flex; flex-direction: column; align-items: flex-start; padding: 60px; z-index: 1000; opacity: 0; pointer-events: none; transform: translateY(-20px); transition: all 0.4s ease-in-out; }
+    .fullscreen-menu.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .fullscreen-menu ul { margin-top: 60px; list-style: none; padding: 0; font-size: 2rem; }
+    .fullscreen-menu ul li { margin-bottom: 30px; }
+    .fullscreen-menu ul li a { color: white; text-decoration: none; }
+    .fullscreen-menu .close-btn { position: absolute; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; background: none; border: none; color: white; }
+    .layout {
+  display: flex;
+  flex: 1;
+  margin-top: 71px;
+}
+nav {
+  width: 250px;
+  border-right: 1px solid #eee;
+  padding: 2rem 1rem;
+  /* --- 핵심 수정 --- */
+  position: sticky; /* 스크롤 시 특정 위치에 고정 */
+  top: 71px;      /* 상단 헤더 높이(71px)만큼 떨어진 위치에 고정 */
+  height: calc(100vh - 71px); /* 화면 높이에서 헤더 높이를 뺀 만큼의 높이를 차지 */
+  align-self: flex-start; /* 부모(flex)의 시작점에 정렬 */
+}
+    nav .title { font-weight: bold; font-size: 1rem; color: #999; margin-bottom: 2rem; }
+    nav ul { list-style: none; padding: 0; }
+    nav ul li { margin-bottom: 1.5rem; }
+    nav ul li a { text-decoration: none; font-weight: bold; color: #111; }
+    nav ul li a.active { border-bottom: 2px solid black; }
+    main { flex: 1; padding: 40px; }
+    h1 { font-weight: 700; margin-bottom: 20px; font-size: 2.5rem; }
+    footer { text-align: center; font-size: 0.9rem; color: #666; padding: 40px 20px 60px; border-top: 1px solid #eee; background-color: #fafafa; }
+
+    /* 렌탈 페이지 고유 스타일 */
+    .rental-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+    .rental-card { position: relative; overflow: hidden; border-radius: 8px; cursor: pointer; }
+    .rental-card img { width: 100%; display: block; transition: transform 0.3s ease; border-radius: 8px; }
+    .rental-card:hover img { transform: scale(1.05); }
+    .overlay-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold; font-size: 1.4rem; opacity: 0; transition: all 0.3s ease; z-index: 2; width: 100%; text-align: center; }
+    .rental-card:hover .overlay-text { opacity: 1; }
+    .rental-card::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.3s ease; z-index: 1; border-radius: 8px; }
+    .rental-card:hover::after { opacity: 1; }
+    
+    /* 모달 스타일 */
+    #modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; display: flex; justify-content:center; align-items:center; flex-direction:column; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    #modal.show { opacity: 1; pointer-events: auto; }
+    #modal img { max-width: 90%; max-height: 80vh; border-radius: 10px; object-fit: contain; }
+    .modal-nav { position: absolute; background: none; border: none; color: white; font-size: 2.5rem; cursor: pointer; top: 50%; transform: translateY(-50%); z-index: 2001; padding: 10px 20px; }
+    #prevBtn { left: 20px; }
+    #nextBtn { right: 20px; }
+    #closeBtn { position: absolute; top: 30px; right: 40px; font-size: 2rem; background: none; border: none; color: white; cursor: pointer; z-index: 2002; }
+    #modalLabel { color: white; margin-top: 20px; font-size: 1.2rem; font-weight: 600; }
+    
+    /* 최상단 이동 버튼 스타일 */
+    #scrollToTopBtn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background-color: rgba(0, 0, 0, 0.7); color: white; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 100; line-height: 50px; text-align: center; }
+    #scrollToTopBtn.show { display: block; opacity: 1; }
+    #scrollToTopBtn:hover { background-color: black; transform: scale(1.1); }
+    
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; }
+      nav { width: 100%; border-right: none; border-bottom: 1px solid #eee; padding: 1rem; }
+      main { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="menu-icon" onclick="openMenu()">☰</div>
+      <a class="logo-link" href="index.html">VANIA</a>
+    </div>
+  </header>
+
+  <div class="fullscreen-menu" id="fullscreenMenu">
+    <button class="close-btn" onclick="closeMenu()">✕</button>
+    <ul>
+      <li><a href="brand.html">ABOUT</a></li>
+      <li><a href="bespoke-suit.html">SERVICE</a></li>
+      <li><a href="elements.html">THE MAKING</a></li>
+        <li><a href="reservation.html">RESERVATION</a></li>
+    </ul>
+    <img src="./assets/overlay_sketch.png" alt="Overlay Image" style="position:fixed; bottom: 150px; right: 150px; width: 400px; opacity: 0.85; z-index: -1;" />
+  </div>
+
+  <div class="layout">
+    <nav>
+      <div class="title">SERVICE</div>
+      <ul>
+        <li><a href="bespoke-suit.html">BESPOKE SUIT</a></li>
+        <li><a href="wedding.html">WEDDING PACKAGE</a></li>
+        <li><a class="active" href="rental.html">RENTAL</a></li>
+      </ul>
+    </nav>
+    <main>
+      <h1>RENTAL SERVICE</h1>
+      <div class="rental-gallery">
+          <div class="rental-card" onclick="openModal(0)"><img src="./assets/rental/rental1.jpg" alt="차콜 윈도우 체크" /><div class="overlay-text">차콜 윈도우 체크</div></div>
+          <div class="rental-card" onclick="openModal(1)"><img src="./assets/rental/rental2.jpg" alt="그레이 체크" /><div class="overlay-text">그레이 체크</div></div>
+          <div class="rental-card" onclick="openModal(2)"><img src="./assets/rental/rental3.jpg" alt="네이비 글렌 체크" /><div class="overlay-text">네이비 글렌 체크</div></div>
+          <div class="rental-card" onclick="openModal(3)"><img src="./assets/rental/rental4.jpg" alt="네이비 스트라이프" /><div class="overlay-text">네이비 스트라이프</div></div>
+          <div class="rental-card" onclick="openModal(4)"><img src="./assets/rental/rental5.jpg" alt="아이보리" /><div class="overlay-text">아이보리</div></div>
+          <div class="rental-card" onclick="openModal(5)"><img src="./assets/rental/rental6.jpg" alt="살몬 핑크" /><div class="overlay-text">살몬 핑크</div></div>
+          <div class="rental-card" onclick="openModal(6)"><img src="./assets/rental/rental7.jpg" alt="다크 네이비" /><div class="overlay-text">다크 네이비</div></div>
+          <div class="rental-card" onclick="openModal(7)"><img src="./assets/rental/rental8.jpg" alt="라이트 네이비" /><div class="overlay-text">라이트 네이비</div></div>
+          <div class="rental-card" onclick="openModal(8)"><img src="./assets/rental/rental9.jpg" alt="차콜 버드아이" /><div class="overlay-text">차콜 버드아이</div></div>
+          <div class="rental-card" onclick="openModal(9)"><img src="./assets/rental/rental10.jpg" alt="라이트 그레이" /><div class="overlay-text">라이트 그레이</div></div>
+          <div class="rental-card" onclick="openModal(10)"><img src="./assets/rental/rental11.jpg" alt="다크 브라운" /><div class="overlay-text">다크 브라운</div></div>
+          <div class="rental-card" onclick="openModal(11)"><img src="./assets/rental/rental12.jpg" alt="그레이 하운드 턱시도" /><div class="overlay-text">그레이 하운드 턱시도</div></div>
+          <div class="rental-card" onclick="openModal(12)"><img src="./assets/rental/rental13.jpg" alt="베이지" /><div class="overlay-text">베이지</div></div>
+          <div class="rental-card" onclick="openModal(13)"><img src="./assets/rental/rental14.jpg" alt="그레이" /><div class="overlay-text">그레이</div></div>
+          <div class="rental-card" onclick="openModal(14)"><img src="./assets/rental/rental15.jpg" alt="네이비" /><div class="overlay-text">네이비</div></div>
+          <div class="rental-card" onclick="openModal(15)"><img src="./assets/rental/rental16.jpg" alt="네이비 턱시도" /><div class="overlay-text">네이비 턱시도</div></div>
+      </div>
+      <div id="modal">
+        <button id="prevBtn" class="modal-nav">←</button>
+        <img id="modalImage" src="" alt="Modal Image" />
+        <button id="nextBtn" class="modal-nav">→</button>
+        <button id="closeBtn">✕</button>
+        <div id="modalLabel"></div>
+      </div>
+    </main>
+  </div>
+  
+  <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
+
+  <footer>
+    VANIA<br/>
+    상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br/>
+    주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
+  </footer>
+
+  <script>
+    // 메뉴 기능
+    function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
+    function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
+
+    // 페이지 로드 완료 후 스크립트 실행
+    document.addEventListener('DOMContentLoaded', () => {
+      // 렌탈 모달 스크립트
+      const imageGroups = [...document.querySelectorAll('.rental-gallery .rental-card')].map((card, i) => {
+        const base = `./assets/rental/rental${i + 1}`;
+        // [핵심 수정] 12번(인덱스 11)과 16번(인덱스 15)은 3장, 나머지는 5장으로 설정
+        const length = (i === 11 || i === 15) ? 3 : 5;
+        return Array.from({ length }, (_, j) => j === 0 ? `${base}.jpg` : `${base}-${j + 1}.jpg`);
+      });
+
+      let currentGroup = [], currentSlideIndex = 0;
+      const modal = document.getElementById('modal');
+      const modalImage = document.getElementById('modalImage');
+      const modalLabel = document.getElementById('modalLabel');
+      const rentalCards = document.querySelectorAll('.rental-gallery .rental-card');
+      
+      window.openModal = function(index) {
+        currentGroup = imageGroups[index];
+        currentSlideIndex = 0;
+        modalLabel.textContent = rentalCards[index].querySelector('.overlay-text').textContent;
+        modal.classList.add('show');
+        updateModal();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('show');
+        document.body.style.overflow = 'auto';
+      }
+
+      function changeSlide(dir) {
+        currentSlideIndex = (currentSlideIndex + dir + currentGroup.length) % currentGroup.length;
+        updateModal();
+      }
+
+      function updateModal() {
+        if (currentGroup && currentGroup.length > 0) {
+            modalImage.src = currentGroup[currentSlideIndex];
+        }
+      }
+
+      document.getElementById('prevBtn').onclick = () => changeSlide(-1);
+      document.getElementById('nextBtn').onclick = () => changeSlide(1);
+      document.getElementById('closeBtn').onclick = () => closeModal();
+      modal.addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
+      window.addEventListener('keydown', e => {
+        if (modal.classList.contains('show')) {
+          if (e.key === 'ArrowLeft') changeSlide(-1);
+          else if (e.key === 'ArrowRight') changeSlide(1);
+          else if (e.key === 'Escape') closeModal();
+        }
+      });
+
+      // 최상단 이동 버튼 스크립트
+      const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+      if (scrollToTopBtn) {
+        window.onscroll = function() {
+          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            scrollToTopBtn.classList.add("show");
+          } else {
+            scrollToTopBtn.classList.remove("show");
+          }
+        };
+        scrollToTopBtn.addEventListener("click", function() {
+          window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+      }
+    });
+  </script>
+</body>
+</html>
