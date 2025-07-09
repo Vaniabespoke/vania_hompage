@@ -15,7 +15,7 @@
     h1, h2, h3, h4 { font-weight: 700; }
     a { text-decoration: none; color: inherit; cursor: pointer; }
     
-    header, .hero-text, .quote-section {
+    header, .hero-text, .quote-section, .no-fee-content h2 {
         font-family: 'Noto Serif KR', serif;
     }
     
@@ -98,15 +98,13 @@
         display: block; 
     }
 
-
     @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
     @keyframes fadeInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
     .fade-in-left { animation: fadeInLeft 1s ease-out both; }
     .fade-in-right { animation: fadeInRight 1s ease-out both; }
 
-    /* 0% 정책 섹션 디자인 */
+    /* MOD: 0% 정책 섹션 최종 수정 */
     .no-fee-section { 
-        flex-direction: column;
         background: url('./assets/policy_bg.jpg') no-repeat center center / cover;
         color: #333;
         position: relative;
@@ -121,42 +119,48 @@
     .no-fee-content {
         max-width: 700px;
         width: 90%;
-        text-align: left;
+        text-align: center;
         position: relative;
         z-index: 1;
     }
     .no-fee-content .pre-header {
-        font-size: 0.9rem;
-        color: #888;
-        margin-bottom: 1rem;
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 0.8rem;
+        font-weight: 500;
     }
     .no-fee-content h2 {
-        font-size: 2.6rem;
-        line-height: 1.6;
-        margin-bottom: 3.5rem;
+        font-size: 3rem;
+        line-height: 1.4;
+        margin-bottom: 1.5rem;
+        color: #111;
         font-weight: 700;
-        color: #333;
     }
     .no-fee-content h2 .highlight {
         color: #c0392b;
-        font-size: 4rem;
+        font-family: 'Pretendard', sans-serif;
         font-weight: 900;
-        vertical-align: -10%;
-        margin: 0 0.1em;
+    }
+    .no-fee-content .sub-headline {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 3rem;
+        line-height: 1.7;
     }
     .no-fee-content ol {
         list-style: none;
         padding-left: 0;
         counter-reset: no-fee-counter;
-        max-width: 100%;
+        display: inline-block;
+        text-align: left;
     }
     .no-fee-content li {
-        font-size: 1.1rem;
-        color: #555;
-        line-height: 1.8;
+        font-size: 1.05rem;
+        color: #333;
+        line-height: 1.9;
         position: relative;
-        padding-left: 2.5em;
-        margin-bottom: 1.5rem;
+        padding-left: 2.2em;
+        margin-bottom: 1.2rem;
     }
     .no-fee-content li:last-child { margin-bottom: 0; }
     .no-fee-content li::before {
@@ -166,70 +170,9 @@
         left: 0;
         top: 0;
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         color: #333;
     }
-
-
-    /* 새로운 Q&A 디자인 */
-    .new-qa-section { background-color: #f9f9f9; }
-    .new-qa-container { display: flex; align-items: center; gap: 4vw; max-width: 900px; width: 90%; }
-    .section[data-anchor="trust-fit"] .new-qa-container,
-    .section[data-anchor="trust-memory"] .new-qa-container {
-        margin-left: 15vw; margin-right: auto;
-    }
-    .section[data-anchor="trust-value"] .new-qa-container {
-        margin-left: auto; margin-right: 15vw;
-    }
-    .new-qa-image-side { 
-        flex: 0 0 auto; 
-        width: 220px; 
-        aspect-ratio: 9 / 16; 
-        border-radius: 12px; 
-        background-size: cover; 
-        background-position: center; 
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        transition: transform 0.4s ease;
-    }
-    .new-qa-container:hover .new-qa-image-side { transform: scale(1.05); }
-    .qa-text-content { position: relative; flex: 1; text-align: left; padding-top: 7rem; }
-    
-    .new-qa-container .qa-text-content { max-width: 550px; }
-
-    .qa-question {
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-family: 'Pretendard', sans-serif;
-        font-weight: 900;
-        font-size: 6rem;
-        color: #dbe1e4;
-        white-space: nowrap;
-        z-index: 2;
-        line-height: 1;
-    }
-    .qa-answer-block { position: relative; z-index: 1; }
-    .qa-answer-block h2 {
-        position: relative;
-        font-size: 2.2rem;
-        padding-top: 1.5rem;
-        margin-bottom: 1rem;
-    }
-    .qa-answer-block h2::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100px;
-        height: 4px;
-        background-color: #c0392b;
-        border-radius: 2px;
-    }
-    .qa-answer-block p { font-size: 1.1rem; color: #555; line-height: 1.8; }
-    .new-qa-container.layout-reversed { flex-direction: row-reverse; }
-    .new-qa-container.layout-reversed .qa-text-content { text-align: right; }
-    .new-qa-container.layout-reversed .qa-question { left: auto; right: 0; }
-    .new-qa-container.layout-reversed .qa-answer-block h2::before { left: auto; right: 0; }
     
     /* 유튜브 섹션 */
     .youtube-section { 
@@ -272,6 +215,7 @@
         position: relative;
         padding-bottom: 20px;
         line-height: 1.5;
+        font-family: 'Pretendard', sans-serif;
     }
     .youtube-text-content h2::after {
         content: '';
@@ -301,7 +245,7 @@
     .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
     .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-    /* MOD: 인용문 섹션 (새로운 디자인) */
+    /* 인용문 섹션 */
     .quote-section {
         background: url('./assets/group_photo.jpg') no-repeat center center/cover;
         position: relative;
@@ -376,7 +320,6 @@
     }
     .reveal-text button:hover::after { opacity: 1; }
 
-
     footer { padding: 40px; text-align: center; font-size: 0.9rem; }
     
     .mobile-card { margin-bottom: 3rem; }
@@ -430,7 +373,7 @@
 
     /* 반응형 스타일 정리 */
     @media (max-width: 768px) {
-        .fp-section .fp-tableCell { padding: 0 !important; }
+        .fp-section .fp-tableCell { padding: 8vh 8vw !important; }
 
         h1, h2, h3, h4, p, blockquote, li, cite { line-height: 1.5; }
         h1 { font-size: 2rem !important; }
@@ -479,44 +422,13 @@
         .vania-intro-text p { color: inherit; font-size: 1rem !important; }
         .vania-intro-image-wrapper { display: none; }
         
-        .no-fee-section .fp-tableCell { padding: 8vh 8vw !important; }
         .no-fee-section {
             background-position: center bottom;
-            background-size: 100% auto;
         }
-        .no-fee-content { text-align: center; }
-        .no-fee-content h2 { font-size: 1.8rem !important; line-height: 1.5; margin-bottom: 2.5rem; }
-        .no-fee-content h2 .highlight { font-size: 2.8rem; }
-        .no-fee-content ol { max-width: 100%; padding: 0 5%; display: inline-block; text-align: left; }
+        .no-fee-content h2 { font-size: 2.2rem !important; margin-bottom: 1rem; }
+        .no-fee-content .sub-headline { font-size: 1rem !important; margin-bottom: 2.5rem; }
+        .no-fee-content ol { padding: 0 5%; }
         .no-fee-content li { font-size: 0.95rem !important; margin-bottom: 1rem; }
-
-        .section[data-anchor*="trust"] .fp-tableCell { padding: 5vh 5vw !important; }
-        .section[data-anchor*="trust"] .new-qa-container {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .new-qa-container { flex-direction: column; width: 100%; gap: 3vh; }
-        .new-qa-container.layout-reversed { flex-direction: column; }
-        .new-qa-image-side { display: block; width: 100%; height: auto; max-width: none; aspect-ratio: 16 / 10; margin: 0; border-radius: 10px; }
-        
-        .qa-text-content { text-align: center; padding-top: 2vh; }
-        .qa-question { position: static; white-space: normal; font-size: 2rem !important; margin-bottom: 1rem; color: #e2e8eb; line-height: 1.3; }
-        .qa-answer-block { padding-top: 0; }
-        .qa-answer-block h2 { font-size: 1.5rem !important; padding-top: 1rem; margin-bottom: 0.5rem; }
-        .qa-answer-block p { font-size: 0.9rem !important; line-height: 1.6; }
-        .qa-answer-block h2::before {
-            left: 50%; transform: translateX(-50%); right: auto; top: 0; width: 50px;
-        }
-        .section[data-anchor="trust-fit"] .qa-text-content,
-        .section[data-anchor="trust-memory"] .qa-text-content {
-            text-align: right;
-        }
-        .section[data-anchor="trust-fit"] .qa-answer-block h2::before,
-        .section[data-anchor="trust-memory"] .qa-answer-block h2::before {
-            left: auto; 
-            right: 0;
-            transform: none;
-        }
         
         .youtube-section .fp-tableCell { padding: 8vh 5vw !important; }
         .youtube-section::before { display: none; }
@@ -592,52 +504,13 @@
     <div class="section no-fee-section" data-anchor="no-fee" data-theme="light">
         <div class="no-fee-content">
             <p class="pre-header">VANIA의 정직한 관계</p>
-            <h2>숨겨진 돈 <span class="highlight">0원</span> </h2> 우리 공방에서  <br> 직접 제작하는 정장 <br> 원가부터 제작과정 전부를 공개합니다. </h2>
+            <h2>숨겨진 돈 <span class="highlight">0</span>원</h2>
+            <p class="sub-headline">우리 공방에서 직접 제작하는 정장, 원가부터 제작과정 전부를 공개합니다.</p>
             <ol>
                 <li>웨딩플래너 수수료 0원, 고품질 저비용 정책 실현</li>
                 <li>업계 최초! 원단·공임·마진 전액 투명 공개로 ‘가격 거품’ 완전 제거</li>
-                <li>매장 내 수제공방에서 지정된 장인이 직접제작 . 품질▲ 가격▼</li>
+                <li>매장 내 수제공방에서 지정된 장인이 직접제작. 품질▲ 가격▼</li>
             </ol>
-        </div>
-    </div>
-    
-    <!-- 새로운 Q&A 섹션 1 -->
-    <div class="section new-qa-section" data-anchor="trust-fit" data-theme="light">
-        <div class="new-qa-container">
-            <div class="new-qa-image-side" style="background-image: url('./assets/trust_bg_1.jpg');"></div>
-            <div class="qa-text-content">
-                <h3 class="qa-question">내 체형에 어색하지 않을까?</h3>
-                <div class="qa-answer-block">
-                    <h2>데이터가 만드는 '성형핏'</h2>
-                    <p>VANIA는 8년간 축적된 수천 건의 체형 데이터를 바탕으로 당신의 장점은 극대화하고, 단점은 완벽하게 보완하는 패턴을 제작합니다. 단순한 사이즈 측정을 넘어, 당신의 자세와 균형까지 고려합니다.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 새로운 Q&A 섹션 2 (레이아웃 반전) -->
-    <div class="section new-qa-section" data-anchor="trust-value" data-theme="light">
-        <div class="new-qa-container layout-reversed">
-            <div class="new-qa-image-side" style="background-image: url('./assets/trust_bg_2.jpg');"></div>
-            <div class="qa-text-content">
-                <h3 class="qa-question">가격이 부담스럽지 않을까?</h3>
-                <div class="qa-answer-block">
-                    <h2>투명함이 만드는 '정직한 가치'</h2>
-                    <p>우리는 공방을 직접 운영하여 모든 유통 비용을 제거했습니다. 상담 시 모든 원단과 공임비를 투명하게 공개하고, 당신의 예산 안에서 최고의 가치를 선택할 수 있도록 돕습니다.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 새로운 Q&A 섹션 3 -->
-    <div class="section new-qa-section" data-anchor="trust-memory" data-theme="light">
-        <div class="new-qa-container">
-            <div class="new-qa-image-side" style="background-image: url('./assets/trust_bg_3.jpg');"></div>
-            <div class="qa-text-content">
-                <h3 class="qa-question">한 번 입고 못 입는 건 아닐까?</h3>
-                <div class="qa-answer-block">
-                    <h2>경험으로 만드는 '스타일'</h2>
-                    <p>VANIA의 목표는 '오래도록 멋진 옷'입니다. 유행을 좇지 않고, 당신의 라이프스타일을 경청하여 중요한 순간마다 자신감을 더해줄 타임리스 디자인을 제안합니다.</p>
-                </div>
-            </div>
         </div>
     </div>
     
@@ -688,7 +561,7 @@
                 <div class="mobile-card-text">
                     <h2>RENTAL SERVICE</h2>
                     <p>특별한 날을 위한 완벽한 스타일링</p>
-                    <button onclick="location.href='rental-service.html'">자세히 보기</button>
+                    <button onclick="location.href='RENTAL.html'">자세히 보기</button>
                 </div>
             </div>
         </div>
@@ -706,7 +579,7 @@
                 <div class="reveal-text text-right">
                     <h2>RENTAL SERVICE</h2>
                     <p>특별한 날을 위한 완벽한 스타일링</p>
-                    <button onclick="location.href='rental-service.html'">자세히 보기</button>
+                    <button onclick="location.href='rental.html'">자세히 보기</button>
                 </div>
             </div>
         </div>
@@ -733,7 +606,7 @@
             autoScrolling: true,
             scrollingSpeed: 1000,
             navigation: true,
-            anchors: ['hero', 'intro-visual', 'no-fee', 'trust-fit', 'trust-value', 'trust-memory', 'youtube', 'quote', 'services', 'footer'],
+            anchors: ['hero', 'intro-visual', 'no-fee', 'youtube', 'quote', 'services', 'footer'],
             
             afterLoad: function(origin, destination, direction){
                 if (destination.anchor !== 'hero') {
