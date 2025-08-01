@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brand Story - VANIA</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* 다른 페이지와 동일한 기본 스타일 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Noto Serif KR', serif; color: #111; background-color: #fff; line-height: 1.8; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
@@ -19,21 +19,8 @@
     .fullscreen-menu ul li { margin-bottom: 30px; }
     .fullscreen-menu ul li a { color: white; text-decoration: none; }
     .fullscreen-menu .close-btn { position: absolute; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; background: none; border: none; color: white; }
-    .layout {
-  display: flex;
-  flex: 1;
-  margin-top: 71px;
-}
-nav {
-  width: 250px;
-  border-right: 1px solid #eee;
-  padding: 2rem 1rem;
-  /* --- 핵심 수정 --- */
-  position: sticky; /* 스크롤 시 특정 위치에 고정 */
-  top: 71px;      /* 상단 헤더 높이(71px)만큼 떨어진 위치에 고정 */
-  height: calc(100vh - 71px); /* 화면 높이에서 헤더 높이를 뺀 만큼의 높이를 차지 */
-  align-self: flex-start; /* 부모(flex)의 시작점에 정렬 */
-}
+    .layout { display: flex; flex: 1; margin-top: 71px; }
+    nav { width: 250px; border-right: 1px solid #eee; padding: 2rem 1rem; position: sticky; top: 71px; height: calc(100vh - 71px); align-self: flex-start; }
     nav .title { font-weight: bold; font-size: 1rem; color: #999; margin-bottom: 2rem; }
     nav ul { list-style: none; padding: 0; }
     nav ul li { margin-bottom: 1.5rem; }
@@ -47,33 +34,15 @@ nav {
     .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
     .hero h1 { font-size: 3rem; position: relative; z-index: 1; }
     .intro-text { text-align: center; max-width: 800px; margin: auto; }
-    
-    .feature-section {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 60px;
-        align-items: center;
-        padding-bottom: 80px;
-        margin-bottom: 80px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .feature-section:nth-child(even) {
-        flex-direction: row-reverse;
-    }
-    .feature-image, .feature-text {
-        flex: 1;
-        min-width: 300px;
-        opacity: 0;
-        transition: opacity 1s ease-out, transform 1s ease-out;
-    }
+    .feature-section { display: flex; flex-wrap: wrap; gap: 60px; align-items: center; padding-bottom: 80px; margin-bottom: 80px; border-bottom: 1px solid #f0f0f0; }
+    .feature-section:nth-child(even) { flex-direction: row-reverse; }
+    .feature-image, .feature-text { flex: 1; min-width: 300px; opacity: 0; transition: opacity 1s ease-out, transform 1s ease-out; }
     .feature-image img { width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
     .feature-text h3 { font-size: 2rem; }
     .feature-text .subtitle { font-weight: bold; color: #888; letter-spacing: 1px; }
-
     .from-left { transform: translateX(-100px); }
     .from-right { transform: translateX(100px); }
     .in-view { opacity: 1; transform: translateX(0); }
-
     .cta { text-align: center; background-color: #f8f8f8; }
     .cta a { display: inline-block; margin-top: 20px; padding: 15px 30px; background: black; color: white; text-decoration: none; font-weight: bold; border-radius: 5px; }
     footer { text-align: center; font-size: 0.9rem; color: #666; padding: 40px 20px 60px; border-top: 1px solid #eee; background-color: #fafafa; }
@@ -82,11 +51,58 @@ nav {
     #scrollToTopBtn:hover { background-color: black; transform: scale(1.1); }
     
     @media (max-width: 768px) {
+      header { border-bottom: none; }
       .layout { flex-direction: column; }
-      nav { width: 100%; border-right: none; border-bottom: 1px solid #eee; padding: 1rem; }
+      nav {
+        width: 100%;
+        border-right: none;
+        padding: 15px 20px;
+        position: static;
+        height: auto;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 10px 15px;
+      }
+      nav .title {
+        margin: 0;
+        padding: 0;
+        font-size: 0.95rem;
+        color: #999;
+      }
+      nav .title::after {
+        content: '|';
+        color: #ddd;
+        margin-left: 15px;
+        font-weight: 100;
+      }
+      nav ul {
+        display: flex;
+        gap: 20px;
+      }
+      nav ul li { margin: 0; }
+      nav ul li a {
+        font-size: 0.95rem;
+      }
       main { padding: 0; }
+      .hero, main > section:first-of-type {
+        padding-top: 40px;
+      }
+      section { padding: 60px 20px; }
+      .hero h1 { font-size: 2.5rem; }
       .feature-section, .feature-section:nth-child(even) { flex-direction: column; }
       .from-left, .from-right { transform: translateY(50px); }
+      .fullscreen-menu .overlay-img {
+        width: 60%;
+        max-width: 250px;
+        height: auto;
+        bottom: 10vh;
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+      }
     }
   </style>
 </head>
@@ -97,7 +113,6 @@ nav {
       <a class="logo-link" href="index.html">VANIA</a>
     </div>
   </header>
-
   <div class="fullscreen-menu" id="fullscreenMenu">
     <button class="close-btn" onclick="closeMenu()">✕</button>
     <ul>
@@ -106,9 +121,8 @@ nav {
       <li><a href="elements.html">THE MAKING</a></li>
         <li><a href="reservation.html">RESERVATION</a></li>
     </ul>
-    <img src="./assets/overlay_sketch.png" alt="Overlay Image" style="position:fixed; bottom: 150px; right: 150px; width: 400px; opacity: 0.85; z-index: -1;" />
+    <img src="./assets/overlay_sketch.png" alt="Overlay Image" class="overlay-img" />
   </div>
-
   <div class="layout">
     <nav>
       <div class="title">ABOUT</div>
@@ -118,10 +132,9 @@ nav {
       </ul>
     </nav>
     <main>
-      <div class="hero" style="background-image: url('./assets/brand/brand_hero.jpg');">
+      <div class="hero">
         <h1>OUR PROMISE</h1>
       </div>
-
       <section class="intro-text">
         <h2>VANIA는 다르게 접근합니다</h2>
         <p>
@@ -129,7 +142,6 @@ nav {
           오직 옷의 본질에만 집중합니다. VANIA가 고객에게 드리는 세 가지 약속입니다.
         </p>
       </section>
-
       <section>
         <div class="feature-section">
           <div class="feature-image from-left">
@@ -145,7 +157,6 @@ nav {
             </p>
           </div>
         </div>
-
         <div class="feature-section">
           <div class="feature-text from-left">
              <p class="subtitle">PROMISE 02</p>
@@ -160,7 +171,6 @@ nav {
             <img src="./assets/brand/brand_pricing.jpg" alt="투명한 가격 정책">
           </div>
         </div>
-
         <div class="feature-section">
           <div class="feature-image from-left">
             <img src="./assets/brand/brand_philosophy.jpg" alt="대표 문희철">
@@ -176,26 +186,21 @@ nav {
           </div>
         </div>
       </section>
-
       <section class="cta">
         <h2>VANIA의 약속을 직접 경험해보세요.</h2>
         <a href="reservation.html" target="_blank">방문 예약하기</a>
       </section>
     </main>
   </div>
-  
   <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
-
   <footer>
     VANIA<br/>
     상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br/>
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
-
   <script>
     function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
     function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
-
     document.addEventListener('DOMContentLoaded', () => {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -206,12 +211,9 @@ nav {
           }
         });
       }, { threshold: 0.2 });
-
       document.querySelectorAll('.feature-section').forEach(section => {
         const image = section.querySelector('.feature-image');
         const text = section.querySelector('.feature-text');
-        
-        // HTML 코드 상에서 첫 번째 요소가 이미지인지 텍스트인지 확인하여 클래스 부여
         if (section.children[0].classList.contains('feature-image')) {
             image.classList.add('from-left');
             text.classList.add('from-right');
@@ -221,7 +223,6 @@ nav {
         }
         observer.observe(section);
       });
-
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (scrollToTopBtn) {
         window.onscroll = function() {

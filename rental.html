@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rental - VANIA</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* 다른 페이지와 동일한 기본 스타일 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Noto Serif KR', serif; color: #111; background-color: #fff; line-height: 1.8; display: flex; flex-direction: column; min-height: 100vh; }
@@ -19,21 +19,8 @@
     .fullscreen-menu ul li { margin-bottom: 30px; }
     .fullscreen-menu ul li a { color: white; text-decoration: none; }
     .fullscreen-menu .close-btn { position: absolute; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; background: none; border: none; color: white; }
-    .layout {
-  display: flex;
-  flex: 1;
-  margin-top: 71px;
-}
-nav {
-  width: 250px;
-  border-right: 1px solid #eee;
-  padding: 2rem 1rem;
-  /* --- 핵심 수정 --- */
-  position: sticky; /* 스크롤 시 특정 위치에 고정 */
-  top: 71px;      /* 상단 헤더 높이(71px)만큼 떨어진 위치에 고정 */
-  height: calc(100vh - 71px); /* 화면 높이에서 헤더 높이를 뺀 만큼의 높이를 차지 */
-  align-self: flex-start; /* 부모(flex)의 시작점에 정렬 */
-}
+    .layout { display: flex; flex: 1; margin-top: 71px; }
+    nav { width: 250px; border-right: 1px solid #eee; padding: 2rem 1rem; position: sticky; top: 71px; height: calc(100vh - 71px); align-self: flex-start; }
     nav .title { font-weight: bold; font-size: 1rem; color: #999; margin-bottom: 2rem; }
     nav ul { list-style: none; padding: 0; }
     nav ul li { margin-bottom: 1.5rem; }
@@ -42,8 +29,6 @@ nav {
     main { flex: 1; padding: 40px; }
     h1 { font-weight: 700; margin-bottom: 20px; font-size: 2.5rem; }
     footer { text-align: center; font-size: 0.9rem; color: #666; padding: 40px 20px 60px; border-top: 1px solid #eee; background-color: #fafafa; }
-
-    /* 렌탈 페이지 고유 스타일 */
     .rental-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
     .rental-card { position: relative; overflow: hidden; border-radius: 8px; cursor: pointer; }
     .rental-card img { width: 100%; display: block; transition: transform 0.3s ease; border-radius: 8px; }
@@ -52,8 +37,6 @@ nav {
     .rental-card:hover .overlay-text { opacity: 1; }
     .rental-card::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.3s ease; z-index: 1; border-radius: 8px; }
     .rental-card:hover::after { opacity: 1; }
-    
-    /* 모달 스타일 */
     #modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; display: flex; justify-content:center; align-items:center; flex-direction:column; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     #modal.show { opacity: 1; pointer-events: auto; }
     #modal img { max-width: 90%; max-height: 80vh; border-radius: 10px; object-fit: contain; }
@@ -62,16 +45,56 @@ nav {
     #nextBtn { right: 20px; }
     #closeBtn { position: absolute; top: 30px; right: 40px; font-size: 2rem; background: none; border: none; color: white; cursor: pointer; z-index: 2002; }
     #modalLabel { color: white; margin-top: 20px; font-size: 1.2rem; font-weight: 600; }
-    
-    /* 최상단 이동 버튼 스타일 */
     #scrollToTopBtn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background-color: rgba(0, 0, 0, 0.7); color: white; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 100; line-height: 50px; text-align: center; }
     #scrollToTopBtn.show { display: block; opacity: 1; }
     #scrollToTopBtn:hover { background-color: black; transform: scale(1.1); }
     
     @media (max-width: 768px) {
+      header { border-bottom: none; }
       .layout { flex-direction: column; }
-      nav { width: 100%; border-right: none; border-bottom: 1px solid #eee; padding: 1rem; }
-      main { padding: 20px; }
+      nav {
+        width: 100%;
+        border-right: none;
+        padding: 15px 20px;
+        position: static;
+        height: auto;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 10px 15px;
+      }
+      nav .title {
+        margin: 0;
+        padding: 0;
+        font-size: 0.95rem;
+        color: #999;
+      }
+      nav .title::after {
+        content: '|';
+        color: #ddd;
+        margin-left: 15px;
+        font-weight: 100;
+      }
+      nav ul {
+        display: flex;
+        gap: 20px;
+      }
+      nav ul li { margin: 0; }
+      nav ul li a {
+        font-size: 0.95rem;
+      }
+      main { padding: 40px 20px; }
+      .fullscreen-menu .overlay-img {
+        width: 60%;
+        max-width: 250px;
+        height: auto;
+        bottom: 10vh;
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+      }
     }
   </style>
 </head>
@@ -82,7 +105,6 @@ nav {
       <a class="logo-link" href="index.html">VANIA</a>
     </div>
   </header>
-
   <div class="fullscreen-menu" id="fullscreenMenu">
     <button class="close-btn" onclick="closeMenu()">✕</button>
     <ul>
@@ -91,9 +113,8 @@ nav {
       <li><a href="elements.html">THE MAKING</a></li>
         <li><a href="reservation.html">RESERVATION</a></li>
     </ul>
-    <img src="./assets/overlay_sketch.png" alt="Overlay Image" style="position:fixed; bottom: 150px; right: 150px; width: 400px; opacity: 0.85; z-index: -1;" />
+    <img src="./assets/overlay_sketch.png" alt="Overlay Image" class="overlay-img" />
   </div>
-
   <div class="layout">
     <nav>
       <div class="title">SERVICE</div>
@@ -132,36 +153,26 @@ nav {
       </div>
     </main>
   </div>
-  
   <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
-
   <footer>
     VANIA<br/>
     상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br/>
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
-
   <script>
-    // 메뉴 기능
     function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
     function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
-
-    // 페이지 로드 완료 후 스크립트 실행
     document.addEventListener('DOMContentLoaded', () => {
-      // 렌탈 모달 스크립트
       const imageGroups = [...document.querySelectorAll('.rental-gallery .rental-card')].map((card, i) => {
         const base = `./assets/rental/rental${i + 1}`;
-        // [핵심 수정] 12번(인덱스 11)과 16번(인덱스 15)은 3장, 나머지는 5장으로 설정
         const length = (i === 11 || i === 15) ? 3 : 5;
         return Array.from({ length }, (_, j) => j === 0 ? `${base}.jpg` : `${base}-${j + 1}.jpg`);
       });
-
       let currentGroup = [], currentSlideIndex = 0;
       const modal = document.getElementById('modal');
       const modalImage = document.getElementById('modalImage');
       const modalLabel = document.getElementById('modalLabel');
       const rentalCards = document.querySelectorAll('.rental-gallery .rental-card');
-      
       window.openModal = function(index) {
         currentGroup = imageGroups[index];
         currentSlideIndex = 0;
@@ -170,23 +181,9 @@ nav {
         updateModal();
         document.body.style.overflow = 'hidden';
       }
-
-      function closeModal() {
-        modal.classList.remove('show');
-        document.body.style.overflow = 'auto';
-      }
-
-      function changeSlide(dir) {
-        currentSlideIndex = (currentSlideIndex + dir + currentGroup.length) % currentGroup.length;
-        updateModal();
-      }
-
-      function updateModal() {
-        if (currentGroup && currentGroup.length > 0) {
-            modalImage.src = currentGroup[currentSlideIndex];
-        }
-      }
-
+      function closeModal() { modal.classList.remove('show'); document.body.style.overflow = 'auto'; }
+      function changeSlide(dir) { currentSlideIndex = (currentSlideIndex + dir + currentGroup.length) % currentGroup.length; updateModal(); }
+      function updateModal() { if (currentGroup && currentGroup.length > 0) { modalImage.src = currentGroup[currentSlideIndex]; } }
       document.getElementById('prevBtn').onclick = () => changeSlide(-1);
       document.getElementById('nextBtn').onclick = () => changeSlide(1);
       document.getElementById('closeBtn').onclick = () => closeModal();
@@ -198,20 +195,10 @@ nav {
           else if (e.key === 'Escape') closeModal();
         }
       });
-
-      // 최상단 이동 버튼 스크립트
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (scrollToTopBtn) {
-        window.onscroll = function() {
-          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            scrollToTopBtn.classList.add("show");
-          } else {
-            scrollToTopBtn.classList.remove("show");
-          }
-        };
-        scrollToTopBtn.addEventListener("click", function() {
-          window.scrollTo({top: 0, behavior: 'smooth'});
-        });
+        window.onscroll = function() { if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) { scrollToTopBtn.classList.add("show"); } else { scrollToTopBtn.classList.remove("show"); } };
+        scrollToTopBtn.addEventListener("click", function() { window.scrollTo({top: 0, behavior: 'smooth'}); });
       }
     });
   </script>

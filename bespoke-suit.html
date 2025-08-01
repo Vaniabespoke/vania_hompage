@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bespoke Suit - VANIA</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* 기본 스타일 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Noto Serif KR', serif; color: #111; background-color: #fff; line-height: 1.8; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
@@ -19,21 +19,8 @@
     .fullscreen-menu ul li { margin-bottom: 30px; }
     .fullscreen-menu ul li a { color: white; text-decoration: none; }
     .fullscreen-menu .close-btn { position: absolute; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; background: none; border: none; color: white; }
-    .layout {
-  display: flex;
-  flex: 1;
-  margin-top: 71px;
-}
-nav {
-  width: 250px;
-  border-right: 1px solid #eee;
-  padding: 2rem 1rem;
-  /* --- 핵심 수정 --- */
-  position: sticky; /* 스크롤 시 특정 위치에 고정 */
-  top: 71px;      /* 상단 헤더 높이(71px)만큼 떨어진 위치에 고정 */
-  height: calc(100vh - 71px); /* 화면 높이에서 헤더 높이를 뺀 만큼의 높이를 차지 */
-  align-self: flex-start; /* 부모(flex)의 시작점에 정렬 */
-}
+    .layout { display: flex; flex: 1; margin-top: 71px; }
+    nav { width: 250px; border-right: 1px solid #eee; padding: 2rem 1rem; position: sticky; top: 71px; height: calc(100vh - 71px); align-self: flex-start; }
     nav .title { font-weight: bold; font-size: 1rem; color: #999; margin-bottom: 2rem; }
     nav ul { list-style: none; padding: 0; }
     nav ul li { margin-bottom: 1.5rem; }
@@ -46,7 +33,6 @@ nav {
     .hero { position: relative; height: 60vh; background: url('./assets/bespoke/bespoke_main.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
     .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
     .hero h1 { font-size: 3.5rem; position: relative; z-index: 1; }
-    
     .definition-section { position: relative; background: url('./assets/bespoke/bespoke_philosophy_bg.jpg') center/cover no-repeat fixed; color: white; }
     .definition-section::after { content: ''; position: absolute; inset: 0; background-color: rgba(17, 17, 17, 0.75); }
     .definition-content { position: relative; z-index: 2; text-align: center; }
@@ -57,28 +43,15 @@ nav {
     .value-card h3 { font-size: 1.5rem; color: white; }
     .value-card p { color: #ddd; margin: 0; }
     .value-card .icon { font-size: 2rem; margin-bottom: 15px; color: rgba(255,255,255,0.8); }
-
-    /* [핵심 수정] 새로운 intro-text 섹션 스타일 */
     .intro-text { text-align: center; }
     .intro-text h2 { font-size: 2.2rem; }
-    .reasons-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 30px;
-        margin-top: 40px;
-        text-align: left;
-    }
-    .reason-card {
-        border: 1px solid #eee;
-        padding: 30px;
-        border-radius: 10px;
-    }
+    .reasons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; text-align: left; }
+    .reason-card { border: 1px solid #eee; padding: 30px; border-radius: 10px; }
     .reason-card .icon { font-size: 2rem; margin-bottom: 15px; }
     .reason-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
     .reason-card p { font-size: 1rem; color: #666; margin-bottom: 0; }
     .process-link { margin-top: 60px; font-size: 1.2rem; }
     .process-link a { font-weight:bold; color:#111; text-decoration:underline; }
-
     .cta { text-align: center; background-color: #f8f8f8; }
     .cta a { display: inline-block; margin-top: 20px; padding: 15px 30px; background: black; color: white; text-decoration: none; font-weight: bold; border-radius: 5px; }
     footer { text-align: center; font-size: 0.9rem; color: #666; padding: 40px 20px 60px; border-top: 1px solid #eee; background-color: #fafafa; }
@@ -87,18 +60,63 @@ nav {
     #scrollToTopBtn:hover { background-color: black; transform: scale(1.1); }
     
     @media (max-width: 768px) {
+      header { border-bottom: none; }
       .layout { flex-direction: column; }
-      nav { width: 100%; border-right: none; border-bottom: 1px solid #eee; padding: 1rem; }
+      nav {
+        width: 100%;
+        border-right: none;
+        padding: 15px 20px;
+        position: static;
+        height: auto;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 10px 15px;
+      }
+      nav .title {
+        margin: 0;
+        padding: 0;
+        font-size: 0.95rem;
+        color: #999;
+      }
+      nav .title::after {
+        content: '|';
+        color: #ddd;
+        margin-left: 15px;
+        font-weight: 100;
+      }
+      nav ul {
+        display: flex;
+        gap: 20px;
+      }
+      nav ul li { margin: 0; }
+      nav ul li a {
+        font-size: 0.95rem;
+      }
       main { padding: 0; }
+      .hero, main > section:first-of-type {
+        padding-top: 40px;
+      }
+      section { padding: 60px 20px; }
+      .hero h1 { font-size: 2.5rem; }
       .value-grid { grid-template-columns: 1fr; }
+      .fullscreen-menu .overlay-img {
+        width: 60%;
+        max-width: 250px;
+        height: auto;
+        bottom: 10vh;
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+      }
     }
   </style>
 </head>
 <body>
   <header><div class="header-content"><div class="menu-icon" onclick="openMenu()">☰</div><a class="logo-link" href="index.html">VANIA</a></div></header>
-  <div class="fullscreen-menu" id="fullscreenMenu"><button class="close-btn" onclick="closeMenu()">✕</button><ul><li><a href="brand.html">ABOUT</a></li><li><a href="bespoke-suit.html">SERVICE</a></li><li><a href="elements.html">THE MAKING</a></li>
-            <li><a href="reservation.html">RESERVATION</a></li>
-</ul><img src="./assets/overlay_sketch.png" alt="Overlay Image" style="position:fixed; bottom: 150px; right: 150px; width: 400px; opacity: 0.85; z-index: -1;" /></div>
+  <div class="fullscreen-menu" id="fullscreenMenu"><button class="close-btn" onclick="closeMenu()">✕</button><ul><li><a href="brand.html">ABOUT</a></li><li><a href="bespoke-suit.html">SERVICE</a></li><li><a href="elements.html">THE MAKING</a></li><li><a href="reservation.html">RESERVATION</a></li></ul><img src="./assets/overlay_sketch.png" alt="Overlay Image" class="overlay-img" /></div>
   <div class="layout">
     <nav>
       <div class="title">SERVICE</div>
@@ -108,53 +126,36 @@ nav {
         <li><a href="rental.html">RENTAL</a></li>
       </ul>
     </nav>
-<main>
-  <div class="hero" style="background-image: url('./assets/bespoke/bespoke_main.jpg');"><h1>BESPOKE SUIT</h1></div>
-  
-  <!-- [핵심] 시각적 분리를 위한 인트로 섹션 추가 -->
-  <section class="intro-text">
-    <h2>세상에 단 하나, 당신의 몸과 마음을 담아내다</h2>
-    <p>VANIA의 비스포크 수트는 단순한 옷이 아닙니다. 당신의 체형, 취향, 그리고 라이프스타일이 오롯이 담긴 하나의 작품입니다. 최고의 소재와 타협 없는 기술로 진정한 맞춤의 가치를 경험하세요.</p>
-  </section>
-
-  <section class="definition-section">
-    <div class="definition-content">
-      <h2>오직 당신을 위한 단 하나의 수트</h2>
-      <p>Bespoke는 '미리 주문하다(bespeak)'는 말에서 유래했습니다. 고객이 고른 원단에 대해 "이미 임자가 있다"고 말하던 것에서 시작된, 오직 한 사람의 취향과 사양에 맞춰 제작되는 방식의 정수입니다.</p>
-      <div class="value-grid">
-          <div class="value-card"><div class="icon">📏</div><h3>완벽한 실루엣</h3><p>당신의 체형, 자세, 움직임을 분석하여 가장 이상적인 실루엣을 설계합니다.</p></div>
-          <div class="value-card"><div class="icon">✨</div><h3>자유로운 표현</h3><p>원단부터 단추, 안감까지 모든 디테일을 직접 선택하며 당신의 개성을 표현합니다.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="intro-text">
-    <h2>나만을 위한 옷이 필요한 순간</h2>
-    <div class="reasons-grid">
-      <div class="reason-card">
-        <div class="icon">🏆</div>
-        <h3>중요한 비즈니스 자리</h3>
-        <p>상대에게 신뢰감을 주고, 스스로에게는 자신감을 더하는 최고의 비즈니스 파트너가 되어줍니다.</p>
-      </div>
-      <div class="reason-card">
-        <div class="icon">💍</div>
-        <h3>생애 가장 특별한 날</h3>
-        <p>결혼식의 주인공인 신랑을 가장 빛나게 만들어, 평생 기억될 완벽한 순간을 완성합니다.</p>
-      </div>
-      <div class="reason-card">
-        <div class="icon">👤</div>
-        <h3>보완이 필요한 체형</h3>
-        <p>기성복이 담아낼 수 없는 개인의 체형적 특성을 완벽하게 보완하여 가장 이상적인 비율을 찾아냅니다.</p>
-      </div>
-    </div>
-    <p class="process-link">VANIA의 수트가 어떻게 만들어지는지 더 자세히 알고 싶으신가요? <a href="process.html">7단계 제작 과정 보기</a></p>
-  </section>
-  
-  <section class="cta">
-    <h2>진정한 비스포크의 가치를 경험해보세요.</h2>
-    <a href="reservation.html">예약 및 상담하기</a>
-  </section>
-</main>
+    <main>
+      <div class="hero"><h1>BESPOKE SUIT</h1></div>
+      <section class="intro-text">
+        <h2>세상에 단 하나, 당신의 몸과 마음을 담아내다</h2>
+        <p>VANIA의 비스포크 수트는 단순한 옷이 아닙니다. 당신의 체형, 취향, 그리고 라이프스타일이 오롯이 담긴 하나의 작품입니다. 최고의 소재와 타협 없는 기술로 진정한 맞춤의 가치를 경험하세요.</p>
+      </section>
+      <section class="definition-section">
+        <div class="definition-content">
+          <h2>오직 당신을 위한 단 하나의 수트</h2>
+          <p>Bespoke는 '미리 주문하다(bespeak)'는 말에서 유래했습니다. 고객이 고른 원단에 대해 "이미 임자가 있다"고 말하던 것에서 시작된, 오직 한 사람의 취향과 사양에 맞춰 제작되는 방식의 정수입니다.</p>
+          <div class="value-grid">
+              <div class="value-card"><div class="icon">📏</div><h3>완벽한 실루엣</h3><p>당신의 체형, 자세, 움직임을 분석하여 가장 이상적인 실루엣을 설계합니다.</p></div>
+              <div class="value-card"><div class="icon">✨</div><h3>자유로운 표현</h3><p>원단부터 단추, 안감까지 모든 디테일을 직접 선택하며 당신의 개성을 표현합니다.</p></div>
+          </div>
+        </div>
+      </section>
+      <section class="intro-text">
+        <h2>나만을 위한 옷이 필요한 순간</h2>
+        <div class="reasons-grid">
+          <div class="reason-card"><div class="icon">🏆</div><h3>중요한 비즈니스 자리</h3><p>상대에게 신뢰감을 주고, 스스로에게는 자신감을 더하는 최고의 비즈니스 파트너가 되어줍니다.</p></div>
+          <div class="reason-card"><div class="icon">💍</div><h3>생애 가장 특별한 날</h3><p>결혼식의 주인공인 신랑을 가장 빛나게 만들어, 평생 기억될 완벽한 순간을 완성합니다.</p></div>
+          <div class="reason-card"><div class="icon">👤</div><h3>보완이 필요한 체형</h3><p>기성복이 담아낼 수 없는 개인의 체형적 특성을 완벽하게 보완하여 가장 이상적인 비율을 찾아냅니다.</p></div>
+        </div>
+        <p class="process-link">VANIA의 수트가 어떻게 만들어지는지 더 자세히 알고 싶으신가요? <a href="process.html">7단계 제작 과정 보기</a></p>
+      </section>
+      <section class="cta">
+        <h2>진정한 비스포크의 가치를 경험해보세요.</h2>
+        <a href="reservation.html">예약 및 상담하기</a>
+      </section>
+    </main>
   </div>
   <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
   <footer>VANIA<br/>상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br/>주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com</footer>
@@ -164,9 +165,7 @@ nav {
     document.addEventListener('DOMContentLoaded', () => {
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (scrollToTopBtn) {
-        window.onscroll = function() {
-          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) { scrollToTopBtn.classList.add("show"); } else { scrollToTopBtn.classList.remove("show"); }
-        };
+        window.onscroll = function() { if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) { scrollToTopBtn.classList.add("show"); } else { scrollToTopBtn.classList.remove("show"); } };
         scrollToTopBtn.addEventListener("click", function() { window.scrollTo({top: 0, behavior: 'smooth'}); });
       }
     });
