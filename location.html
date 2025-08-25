@@ -34,18 +34,18 @@
 
     .map-container,.location-info{flex:1;min-width:300px}
     .map-container{
-      width:100%; height:400px; min-height:300px;
-      border-radius:10px; background:#f7f7f7; box-shadow:0 10px 30px rgba(0,0,0,.1);
-      position:relative; overflow:hidden
+      width:100%;height:400px;min-height:300px;border-radius:10px;background:#f7f7f7;
+      box-shadow:0 10px 30px rgba(0,0,0,.1);position:relative;overflow:hidden
+    }
+    .map-error{
+      position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;
+      padding:16px;background:#fff;color:#b00020;font-weight:700;line-height:1.5
     }
 
     .cta{text-align:center;background:#f8f8f8}
     .cta a{display:inline-block;margin-top:20px;padding:15px 30px;background:#000;color:#fff;text-decoration:none;font-weight:bold;border-radius:5px}
 
     footer{text-align:center;font-size:.9rem;color:#666;padding:40px 20px 60px;border-top:1px solid #eee;background:#fafafa}
-
-    #scrollToTopBtn{position:fixed;bottom:30px;right:30px;width:50px;height:50px;background:rgba(0,0,0,.7);color:#fff;border:none;border-radius:50%;font-size:24px;cursor:pointer;display:none;opacity:0;transition:.3s;z-index:100;line-height:50px;text-align:center}
-    #scrollToTopBtn.show{display:block;opacity:1}
 
     @media (max-width:768px){
       .layout{flex-direction:column}
@@ -86,7 +86,7 @@
 
       <section>
         <div class="location-section">
-          <div class="map-container" id="map-suwon"></div>
+          <div class="map-container" id="map-suwon"><div class="map-error"></div></div>
           <div class="location-info">
             <h3>수원점</h3>
             <p>경기 수원시 권선구 권선로 750 1,2층</p>
@@ -95,7 +95,7 @@
         </div>
 
         <div class="location-section">
-          <div class="map-container" id="map-ansan"></div>
+          <div class="map-container" id="map-ansan"><div class="map-error"></div></div>
           <div class="location-info">
             <h3>안산점</h3>
             <p>경기 안산시 단원구 이삭로 38 1층</p>
@@ -111,75 +111,92 @@
     </main>
   </div>
 
-  <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
-
   <footer>
     VANIA<br />
     상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br />
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
 
-  <!-- 1) 콜백 함수를 먼저 전역으로 선언 -->
+  <!-- 1) 콜백: 먼저 전역 선언 -->
   <script>
     window.initNaverMaps = function () {
-      function build(mapId, lat, lng, name) {
-        const el = document.getElementById(mapId);
-        if (!el || !(window.naver && naver.maps)) return;
+      const build = (mapId, lat, lng, name) => {
+        const wrap = document.getElementById(mapId);
+        if (!wrap || !(window.naver && naver.maps)) return;
+
+        const error = (msg) => {
+          const box = wrap.querySelector('.map-error');
+          if (box) { box.style.display = 'flex'; box.innerHTML = msg; }
+        };
 
         // 초기 레이아웃 0px 방지
         let tries = 20;
         (function wait(){
-          if ((el.clientWidth > 0 && el.clientHeight > 0) || --tries <= 0) start();
+          const w = wrap.clientWidth, h = wrap.clientHeight;
+          if ((w>0 && h>0) || --tries<=0) start();
           else setTimeout(wait, 120);
         })();
 
         function start(){
-          const center = new naver.maps.LatLng(lat, lng);
-          const map = new naver.maps.Map(mapId, {
-            center: center,
-            zoom: 17,
-            scrollWheel: false,
-            zoomControl: true,
-            zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
-          });
+          try{
+            const center = new naver.maps.LatLng(lat, lng);
+            const map = new naver.maps.Map(mapId, {
+              center, zoom: 17, scrollWheel: false,
+              zoomControl: true,
+              zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
+            });
+            new naver.maps.Marker({ position: center, map });
 
-          const marker = new naver.maps.Marker({ position: center, map });
-          const link = "https://map.naver.com/p/search/" + encodeURIComponent(name);
-          new naver.maps.InfoWindow({
-            content: `<div style="padding:10px;text-align:center;font-weight:bold;">
-                        <a href="${link}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">${name}</a>
-                      </div>`
-          }).open(map, marker);
+            const link = "https://map.naver.com/p/search/" + encodeURIComponent(name);
+            new naver.maps.InfoWindow({
+              content: `<div style="padding:10px;text-align:center;font-weight:bold;">
+                          <a href="${link}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">${name}</a>
+                        </div>`
+            }).open(map, center);
 
-          // 폭이 줄어들 때 회색칸 방지: 강제 리사이즈 + 리센터
-          const refresh = () => {
-            map.setSize(new naver.maps.Size(el.clientWidth, el.clientHeight));
-            naver.maps.Event.trigger(map, 'resize');
-            map.setCenter(center);
-          };
-          if ('ResizeObserver' in window) new ResizeObserver(refresh).observe(el);
-          addEventListener('resize', refresh, { passive:true });
-          addEventListener('orientationchange', () => setTimeout(refresh, 200));
-          document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
-
-          // 스크롤탑 버튼
-          const btn = document.getElementById("scrollToTopBtn");
-          if (btn) {
-            addEventListener("scroll", () => {
-              const top = document.body.scrollTop || document.documentElement.scrollTop;
-              btn.classList.toggle("show", top > 100);
-            }, { passive:true });
-            btn.addEventListener("click", () => window.scrollTo({ top:0, behavior:"smooth" }));
+            // 폭 변경 대응(회색칸 방지)
+            const refresh = () => {
+              map.setSize(new naver.maps.Size(wrap.clientWidth, wrap.clientHeight));
+              naver.maps.Event.trigger(map, 'resize');
+              map.setCenter(center);
+            };
+            if ('ResizeObserver' in window) new ResizeObserver(refresh).observe(wrap);
+            addEventListener('resize', refresh, { passive:true });
+            addEventListener('orientationchange', () => setTimeout(refresh, 200));
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+          }catch(e){
+            console.error(e);
+            error('지도 초기화 중 오류가 발생했습니다.');
           }
         }
-      }
-      // 지도 2곳 생성
+      };
+
       build('map-suwon', 37.2572704171271, 127.032962472617, '바니아 수원점');
       build('map-ansan', 37.3138714865728, 126.840948045105, '바니아 안산점');
     };
+
+    // 2) 안전망: API가 안 뜨면 사유를 바로 보여줌(도메인/키 문제 탐지)
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (!(window.naver && naver.maps)) {
+          document.querySelectorAll('.map-container .map-error').forEach(e=>{
+            e.style.display='flex';
+            e.innerHTML =
+              '네이버 지도 API가 로드되지 않았습니다.<br>' +
+              '· 스크립트 중복/차단 여부 확인<br>' +
+              '· NCP > Maps > Application > Service URL에 현재 도메인 등록(예: vania.co.kr, www.vania.co.kr, *.netlify.app, localhost)<br>' +
+              '· 올바른 ncpClientId 사용 여부 확인';
+          });
+        }
+      }, 1200);
+    });
   </script>
 
-  <!-- 2) 네이버 지도 스크립트: oapi + ncpClientId + callback (단 1개만) -->
-  <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb&callback=initNaverMaps" defer></script>
+  <!-- 3) 네이버 지도 스크립트: oapi + ncpClientId + callback (단 1개만) -->
+  <script
+    src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb&callback=initNaverMaps"
+    defer
+    onerror="document.querySelectorAll('.map-container .map-error').forEach(e=>{e.style.display='flex';e.textContent='지도 스크립트 로드 실패';});">
+  </script>
 </body>
 </html>
