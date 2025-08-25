@@ -2,7 +2,6 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <!-- ★★★ 가장 중요한 수정: 모든 기기에서 화면 크기를 올바르게 인식하도록 메타 태그 추가 ★★★ -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Location - VANIA</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
@@ -64,48 +63,21 @@
         flex-wrap: wrap;
         gap: 10px 15px;
       }
-      nav .title {
-        margin: 0;
-        padding: 0;
-        font-size: 0.95rem;
-        color: #999;
-      }
-      nav .title::after {
-        content: '|';
-        color: #ddd;
-        margin-left: 15px;
-        font-weight: 100;
-      }
-      nav ul {
-        display: flex;
-        gap: 20px;
-      }
+      nav .title { margin: 0; padding: 0; font-size: 0.95rem; color: #999; }
+      nav .title::after { content: '|'; color: #ddd; margin-left: 15px; font-weight: 100; }
+      nav ul { display: flex; gap: 20px; }
       nav ul li { margin: 0; }
-      nav ul li a {
-        font-size: 0.95rem;
-      }
+      nav ul li a { font-size: 0.95rem; }
       main { padding: 0; }
-      .hero, main > section:first-of-type {
-        padding-top: 40px;
-      }
+      .hero, main > section:first-of-type { padding-top: 40px; }
       section { padding: 60px 20px; }
       .hero h1 { font-size: 2.5rem; }
       .location-section, .location-section:nth-child(even) { flex-direction: column; }
-      .map-container {
-        height: 300px;
-        margin-bottom: 30px;
-      }
-      .location-info {
-        text-align: center;
-      }
+      .map-container { height: 300px; margin-bottom: 30px; }
+      .location-info { text-align: center; }
       .fullscreen-menu .overlay-img {
-        width: 60%;
-        max-width: 250px;
-        height: auto;
-        bottom: 10vh;
-        left: 50%;
-        transform: translateX(-50%);
-        right: auto;
+        width: 60%; max-width: 250px; height: auto; bottom: 10vh; left: 50%;
+        transform: translateX(-50%); right: auto;
       }
     }
   </style>
@@ -117,6 +89,7 @@
       <a class="logo-link" href="index.html">VANIA</a>
     </div>
   </header>
+
   <div class="fullscreen-menu" id="fullscreenMenu">
     <button class="close-btn" onclick="closeMenu()">✕</button>
     <ul>
@@ -127,6 +100,7 @@
     </ul>
     <img src="./assets/overlay_sketch.png" alt="Overlay Image" class="overlay-img" />
   </div>
+
   <div class="layout">
     <nav>
       <div class="title">ABOUT</div>
@@ -135,10 +109,12 @@
         <li><a class="active" href="location.html">LOCATION</a></li>
       </ul>
     </nav>
+
     <main>
       <div class="hero">
         <h1>LOCATION</h1>
       </div>
+
       <section>
         <div class="location-section">
           <div class="map-container" id="map-suwon"></div>
@@ -148,6 +124,7 @@
             <p>Tel 031.224.2587 / 010.9779.2587<br>Open AM 10:00 - PM 19:00</p>
           </div>
         </div>
+
         <div class="location-section">
           <div class="map-container" id="map-ansan"></div>
           <div class="location-info">
@@ -157,37 +134,41 @@
           </div>
         </div>
       </section>
+
       <section class="cta">
         <h2>가장 가까운 VANIA에서 당신의 수트를 만나보세요.</h2>
         <a href="reservation.html" target="_blank">온라인 예약하기</a>
       </section>
     </main>
   </div>
+
   <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
+
   <footer>
     VANIA<br/>
     상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br/>
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
-<script
-  type="text/javascript"
-  src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb&callback=initNaverMaps"
-  defer></script>
+
+  <!-- 네이버 지도: 콜백 방식으로 안전하게 로드 -->
+  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb&callback=initNaverMaps" defer></script>
   <script>
     function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
     function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
+
     function initNaverMaps() {
-      // Ensure containers have computed size before init on mobile
+      // 모바일 초기 레이아웃 문제 대응: 컨테이너 크기 확인 후 생성
       function createMap(mapId, lat, lng, storeName) {
         if (!window.naver || !window.naver.maps) return;
         const container = document.getElementById(mapId);
         if (!container) return;
-        // If container has 0 height (not laid out yet), delay a bit
+
         const rect = container.getBoundingClientRect();
         if (rect.height < 50 || rect.width < 50) {
           setTimeout(() => createMap(mapId, lat, lng, storeName), 150);
           return;
         }
+
         const coords = new naver.maps.LatLng(lat, lng);
         const map = new naver.maps.Map(mapId, {
           center: coords,
@@ -196,29 +177,37 @@
           zoomControl: true,
           zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
         });
+
         const marker = new naver.maps.Marker({ position: coords, map });
         const naverMapUrl = "https://map.naver.com/p/search/" + encodeURIComponent(storeName);
         const infoWindow = new naver.maps.InfoWindow({
-          content: `<div style="padding:10px;font-weight:bold;text-align:center;"><a href="${naverMapUrl}" target="_blank" style="text-decoration:none; color:inherit;">${storeName}</a></div>`,
+          content: `<div style="padding:10px;font-weight:bold;text-align:center;">
+                      <a href="${naverMapUrl}" target="_blank" style="text-decoration:none; color:inherit;">${storeName}</a>
+                    </div>`,
           borderColor: '#555'
         });
         infoWindow.open(map, marker);
-        // Refresh when device rotates or section shown
-        window.addEventListener("resize", () => map.refresh());
+
+        // 화면 회전/복귀 시 렌더 갱신
+        addEventListener("resize", () => map.refresh());
         document.addEventListener("visibilitychange", () => { if (!document.hidden) map.refresh(); });
       }
+
+      // 두 지점 지도 생성
       createMap('map-suwon', 37.2572704171271, 127.032962472617, '바니아 수원점');
       createMap('map-ansan', 37.3138714865728, 126.840948045105, '바니아 안산점');
+
+      // 스크롤 탑 버튼
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (scrollToTopBtn) {
-        window.addEventListener("scroll", function () {
+        addEventListener("scroll", () => {
           if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
             scrollToTopBtn.classList.add("show");
           } else {
             scrollToTopBtn.classList.remove("show");
           }
         }, { passive: true });
-        scrollToTopBtn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        scrollToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       }
     }
   </script>
