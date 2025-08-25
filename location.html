@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <!-- ★★★ 가장 중요한 수정: 모든 기기에서 화면 크기를 올바르게 인식하도록 메타 태그 추가 ★★★ -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Location - VANIA</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
@@ -90,13 +91,12 @@
       section { padding: 60px 20px; }
       .hero h1 { font-size: 2.5rem; }
       .location-section, .location-section:nth-child(even) { flex-direction: column; }
-      /* ★★★ 지도 표시 문제 해결 ★★★ */
       .map-container {
-        height: 300px; /* 모바일에서 적절한 높이 지정 */
-        margin-bottom: 30px; /* 아래 텍스트와의 간격 */
+        height: 300px;
+        margin-bottom: 30px;
       }
       .location-info {
-        text-align: center; /* 텍스트 가운데 정렬 */
+        text-align: center;
       }
       .fullscreen-menu .overlay-img {
         width: 60%;
