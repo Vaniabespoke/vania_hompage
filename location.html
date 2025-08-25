@@ -63,48 +63,21 @@
         flex-wrap: wrap;
         gap: 10px 15px;
       }
-      nav .title {
-        margin: 0;
-        padding: 0;
-        font-size: 0.95rem;
-        color: #999;
-      }
-      nav .title::after {
-        content: '|';
-        color: #ddd;
-        margin-left: 15px;
-        font-weight: 100;
-      }
-      nav ul {
-        display: flex;
-        gap: 20px;
-      }
+      nav .title { margin: 0; padding: 0; font-size: 0.95rem; color: #999; }
+      nav .title::after { content: '|'; color: #ddd; margin-left: 15px; font-weight: 100; }
+      nav ul { display: flex; gap: 20px; }
       nav ul li { margin: 0; }
-      nav ul li a {
-        font-size: 0.95rem;
-      }
+      nav ul li a { font-size: 0.95rem; }
       main { padding: 0; }
-      .hero, main > section:first-of-type {
-        padding-top: 40px;
-      }
+      .hero, main > section:first-of-type { padding-top: 40px; }
       section { padding: 60px 20px; }
       .hero h1 { font-size: 2.5rem; }
       .location-section, .location-section:nth-child(even) { flex-direction: column; }
-      .map-container {
-        height: 300px;
-        margin-bottom: 30px;
-      }
-      .location-info {
-        text-align: center;
-      }
+      .map-container { height: 300px; margin-bottom: 30px; }
+      .location-info { text-align: center; }
       .fullscreen-menu .overlay-img {
-        width: 60%;
-        max-width: 250px;
-        height: auto;
-        bottom: 10vh;
-        left: 50%;
-        transform: translateX(-50%);
-        right: auto;
+        width: 60%; max-width: 250px; height: auto; bottom: 10vh; left: 50%;
+        transform: translateX(-50%); right: auto;
       }
     }
   </style>
@@ -149,7 +122,10 @@
         </div>
         <div class="location-section">
           <div class="map-container" id="map-ansan"></div>
-          <div class.location-info">
+          <!-- ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ -->
+          <!-- ★★★ 여기가 문제의 오타가 수정된 부분입니다 ★★★ -->
+          <div class="location-info">
+          <!-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ -->
             <h3>안산점</h3>
             <p>경기 안산시 단원구 이삭로 38 1층</p>
             <p>Tel 031.414.2587 / 010.7236.2587<br>Open AM 10:00 - PM 19:00</p>
@@ -170,37 +146,25 @@
   </footer>
   <script data-cfasync="false" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=byr4vc12fb"></script>
   <script>
+    // 자바스크립트는 롤백하신 정상 작동 코드를 그대로 사용합니다.
     function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
     function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
-
-    // ▼▼▼ 스크립트 수정 시작 ▼▼▼
-
-    // 생성된 지도 객체들을 저장할 배열
-    let maps = [];
-
-    // 지도 생성 함수
-    function createMap(mapId, lat, lng, storeName) {
-      if (!window.naver || !window.naver.maps) return;
-      const coords = new naver.maps.LatLng(lat, lng);
-      const map = new naver.maps.Map(mapId, { center: coords, zoom: 17, scrollWheel: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT } });
-      const marker = new naver.maps.Marker({ position: coords, map: map });
-      const naverMapUrl = "https://map.naver.com/p/search/" + encodeURIComponent(storeName);
-      const infoWindowContent = `<div style="padding:10px;font-weight:bold;text-align:center;"><a href="${naverMapUrl}" target="_blank" style="text-decoration:none; color:inherit;">${storeName}</a></div>`;
-      const infoWindow = new naver.maps.InfoWindow({ content: infoWindowContent, borderColor: '#555' });
-      naver.maps.Event.addListener(marker, "click", function() { window.open(naverMapUrl, "_blank"); });
-      infoWindow.open(map, marker);
-
-      // 생성된 지도 객체를 배열에 저장
-      maps.push(map); 
-    }
-
-    // 페이지 로딩이 완료되면 지도 생성 (롤백된 코드와 동일)
     window.onload = function () {
+      function createMap(mapId, lat, lng, storeName) {
+        if (!window.naver || !window.naver.maps) return;
+        const coords = new naver.maps.LatLng(lat, lng);
+        const map = new naver.maps.Map(mapId, { center: coords, zoom: 17, scrollWheel: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT } });
+        const marker = new naver.maps.Marker({ position: coords, map: map });
+        const naverMapUrl = "https://map.naver.com/p/search/" + encodeURIComponent(storeName);
+        const infoWindowContent = `<div style="padding:10px;font-weight:bold;text-align:center;"><a href="${naverMapUrl}" target="_blank" style="text-decoration:none; color:inherit;">${storeName}</a></div>`;
+        const infoWindow = new naver.maps.InfoWindow({ content: infoWindowContent, borderColor: '#555' });
+        naver.maps.Event.addListener(marker, "click", function() { window.open(naverMapUrl, "_blank"); });
+        infoWindow.open(map, marker);
+      }
       setTimeout(() => {
         createMap('map-suwon', 37.2572704171271, 127.032962472617, '바니아 수원점');
         createMap('map-ansan', 37.3138714865728, 126.840948045105, '바니아 안산점');
       }, 300);
-      
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (scrollToTopBtn) {
         window.onscroll = function () {
@@ -213,25 +177,6 @@
         scrollToTopBtn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
       }
     };
-
-    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-    // ★★★ 여기가 모바일/리사이징 문제 해결의 핵심 ★★★
-    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-      // 이전에 설정된 타이머가 있다면 취소 (불필요한 반복 실행 방지)
-      clearTimeout(resizeTimer);
-      // 200ms(0.2초) 뒤에 지도 새로고침 실행
-      resizeTimer = setTimeout(function() {
-        // 저장된 모든 지도에 대해 refresh 명령 실행
-        if(maps.length > 0) {
-          maps.forEach(function(map) {
-            map.refresh();
-          });
-        }
-      }, 200);
-    });
-    // ▲▲▲ 스크립트 수정 끝 ▲▲▲
   </script>
 </body>
 </html>
