@@ -155,19 +155,21 @@
     function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
     function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
 
+    // 네이버 지도 API 로드 후 실행될 함수
     function initNaverMaps() {
-      // 지도 생성 함수
+      
+      // 지도 생성 함수 (문제 코드 제거됨)
       function createMap(mapId, lat, lng, storeName) {
-        // 네이버 API가 로드되지 않았거나, 지도 div가 없으면 함수 종료
         if (!window.naver || !window.naver.maps || !document.getElementById(mapId)) {
+          console.error("Naver Maps API not loaded or map container not found.");
           return;
         }
 
         const mapOptions = {
           center: new naver.maps.LatLng(lat, lng),
           zoom: 17,
-          scrollWheel: false, // 마우스 휠로 확대/축소 비활성화
-          zoomControl: true, // 확대/축소 컨트롤 표시
+          scrollWheel: false,
+          zoomControl: true,
           zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
         };
 
@@ -185,14 +187,16 @@
           borderColor: '#555'
         });
         
-        // 마커 위에 정보창 열기
         infoWindow.open(map, marker);
 
-        // 창 크기 변경 시 지도 새로고침 (반응형 대응)
-        window.addEventListener("resize", () => map.refresh());
+        // 창 크기가 변경될 때 지도를 새로고침하여 깨짐 방지
+        window.addEventListener("resize", () => {
+          map.refresh();
+          map.setCenter(new naver.maps.LatLng(lat, lng));
+        });
       }
 
-      // 각 지점의 지도 생성 실행
+      // 각 지점의 지도 생성
       createMap('map-suwon', 37.2572704171271, 127.032962472617, '바니아 수원점');
       createMap('map-ansan', 37.3138714865728, 126.840948045105, '바니아 안산점');
 
@@ -200,7 +204,7 @@
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (scrollToTopBtn) {
         window.addEventListener("scroll", () => {
-          const isScrolled = document.body.scrollTop > 100 || document.documentElement.scrollTop > 100;
+          const isScrolled = window.scrollY > 100;
           scrollToTopBtn.classList.toggle("show", isScrolled);
         }, { passive: true });
         scrollToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: 'smooth' }));
