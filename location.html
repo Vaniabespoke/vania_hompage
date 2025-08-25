@@ -2,60 +2,83 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Location - VANIA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{font-family:'Noto Serif KR',serif;color:#111;background:#fff;line-height:1.8;display:flex;flex-direction:column;min-height:100vh}
-    header{display:flex;align-items:center;padding:20px 30px;font-size:1.4rem;font-weight:bold;border-bottom:1px solid #eee;position:fixed;top:0;left:0;width:100%;background:#fff;z-index:999}
-    .header-content{display:flex;align-items:center;gap:16px}
-    .menu-icon{font-size:1.6rem;cursor:pointer}
-    .logo-link{font-weight:bold;font-size:1.4rem;text-decoration:none;color:inherit}
-    .fullscreen-menu{position:fixed;top:0;left:0;width:100%;height:100vh;background:#000;color:#fff;display:flex;flex-direction:column;align-items:flex-start;padding:60px;z-index:1000;opacity:0;pointer-events:none;transform:translateY(-20px);transition:.4s}
-    .fullscreen-menu.active{opacity:1;pointer-events:auto;transform:translateY(0)}
-    .fullscreen-menu ul{margin-top:60px;list-style:none;font-size:2rem}
-    .fullscreen-menu ul li{margin-bottom:30px}
-    .fullscreen-menu ul li a{color:#fff;text-decoration:none}
-    .fullscreen-menu .close-btn{position:absolute;top:30px;right:30px;font-size:2rem;cursor:pointer;background:none;border:none;color:#fff}
-    .layout{display:flex;flex:1;margin-top:71px}
-    nav{width:250px;border-right:1px solid #eee;padding:2rem 1rem;position:sticky;top:71px;height:calc(100vh - 71px)}
-    nav .title{font-weight:bold;font-size:1rem;color:#999;margin-bottom:2rem}
-    nav ul{list-style:none}
-    nav li{margin-bottom:1.5rem}
-    nav a{text-decoration:none;font-weight:bold;color:#111}
-    nav a.active{border-bottom:2px solid #000}
-    main{flex:1}
-    section{padding:100px 40px;max-width:1200px;margin:auto}
-    .hero{position:relative;height:50vh;background:url('./assets/location/location_main.jpg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center}
-    .hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.4)}
-    .hero h1{font-size:3.5rem;position:relative;z-index:1}
-    .location-section{display:flex;flex-wrap:wrap;gap:60px;align-items:center}
-    .location-section:not(:last-child){padding-bottom:100px;margin-bottom:100px;border-bottom:1px solid #f0f0f0}
-    .location-section:nth-child(even){flex-direction:row-reverse}
-    .map-container,.location-info{flex:1;min-width:300px}
-    .map-container{width:100%;height:400px;min-height:300px;border-radius:10px;background:#f7f7f7;box-shadow:0 10px 30px rgba(0,0,0,.1);position:relative;overflow:hidden}
-    .map-error{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:16px;color:#b00020;background:#fff}
-    .location-info h3{font-size:2rem}
-    .cta{text-align:center;background:#f8f8f8}
-    .cta a{display:inline-block;margin-top:20px;padding:15px 30px;background:#000;color:#fff;text-decoration:none;font-weight:bold;border-radius:5px}
-    footer{text-align:center;font-size:.9rem;color:#666;padding:40px 20px 60px;border-top:1px solid #eee;background:#fafafa}
-    #scrollToTopBtn{position:fixed;bottom:30px;right:30px;width:50px;height:50px;background:rgba(0,0,0,.7);color:#fff;border:none;border-radius:50%;font-size:24px;cursor:pointer;display:none;opacity:0;transition:.3s;z-index:100;line-height:50px;text-align:center}
-    #scrollToTopBtn.show{display:block;opacity:1}
-    #scrollToTopBtn:hover{background:#000;transform:scale(1.1)}
-    @media (max-width:768px){
-      .layout{flex-direction:column}
-      nav{width:100%;position:static;height:auto;border:0;border-bottom:1px solid #eee;display:flex;justify-content:center;align-items:baseline;flex-wrap:wrap;gap:10px 15px;padding:15px 20px}
-      nav .title{margin:0;font-size:.95rem;color:#999}
-      nav .title::after{content:'|';color:#ddd;margin-left:15px;font-weight:100}
-      nav ul{display:flex;gap:20px}
-      .hero, main > section:first-of-type{padding-top:40px}
-      section{padding:60px 20px}
-      .hero h1{font-size:2.5rem}
-      .location-section,.location-section:nth-child(even){flex-direction:column}
-      .map-container{height:300px;margin-bottom:30px}
-      .location-info{text-align:center}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Serif KR', serif; color: #111; background-color: #fff; line-height: 1.8; display: flex; flex-direction: column; min-height: 100vh; }
+    header { display: flex; align-items: center; padding: 20px 30px; font-size: 1.4rem; font-weight: bold; border-bottom: 1px solid #eee; position: fixed; top: 0; left: 0; width: 100%; background-color: white; z-index: 999; }
+    .header-content { display: flex; align-items: center; gap: 16px; }
+    .menu-icon { font-size: 1.6rem; cursor: pointer; }
+    .logo-link { font-weight: bold; font-size: 1.4rem; text-decoration: none; color: inherit; }
+    .fullscreen-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: black; color: white; display: flex; flex-direction: column; align-items: flex-start; padding: 60px; z-index: 1000; opacity: 0; pointer-events: none; transform: translateY(-20px); transition: all 0.4s ease-in-out; }
+    .fullscreen-menu.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .fullscreen-menu ul { margin-top: 60px; list-style: none; padding: 0; font-size: 2rem; }
+    .fullscreen-menu ul li { margin-bottom: 30px; }
+    .fullscreen-menu ul li a { color: white; text-decoration: none; }
+    .fullscreen-menu .close-btn { position: absolute; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; background: none; border: none; color: white; }
+    .layout { display: flex; flex: 1; margin-top: 71px; }
+    nav { width: 250px; border-right: 1px solid #eee; padding: 2rem 1rem; position: sticky; top: 71px; height: calc(100vh - 71px); align-self: flex-start; }
+    nav .title { font-weight: bold; font-size: 1rem; color: #999; margin-bottom: 2rem; }
+    nav ul { list-style: none; padding: 0; }
+    nav ul li { margin-bottom: 1.5rem; }
+    nav ul li a { text-decoration: none; font-weight: bold; color: #111; }
+    nav ul li a.active { border-bottom: 2px solid black; }
+    main { flex: 1; }
+    section { padding: 100px 40px; max-width: 1200px; margin: auto; }
+    h1, h2, h3 { font-weight: 700; margin-bottom: 20px; }
+    p { font-size: 1.1rem; margin-bottom: 20px; color: #555;}
+    .hero { position: relative; height: 50vh; background: url('./assets/location/location_main.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
+    .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
+    .hero h1 { font-size: 3.5rem; position: relative; z-index: 1; }
+    .location-section { display: flex; flex-wrap: wrap; gap: 60px; align-items: center; }
+    .location-section:not(:last-child) { padding-bottom: 100px; margin-bottom: 100px; border-bottom: 1px solid #f0f0f0; }
+    .location-section:nth-child(even) { flex-direction: row-reverse; }
+    .map-container, .location-info { flex: 1; min-width: 300px; }
+    .map-container { width: 100%; height: 400px; min-height: 300px; border-radius: 10px; background-color: #f7f7f7; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .location-info h3 { font-size: 2rem; }
+    .location-info p { line-height: 1.7; margin-bottom: 1rem; }
+    .cta { text-align: center; background-color: #f8f8f8; }
+    .cta a { display: inline-block; margin-top: 20px; padding: 15px 30px; background: black; color: white; text-decoration: none; font-weight: bold; border-radius: 5px; }
+    footer { text-align: center; font-size: 0.9rem; color: #666; padding: 40px 20px 60px; border-top: 1px solid #eee; background-color: #fafafa; }
+    #scrollToTopBtn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background-color: rgba(0, 0, 0, 0.7); color: white; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 100; line-height: 50px; text-align: center; }
+    #scrollToTopBtn.show { display: block; opacity: 1; }
+    #scrollToTopBtn:hover { background-color: black; transform: scale(1.1); }
+    
+    @media (max-width: 768px) {
+      header { border-bottom: none; }
+      .layout { flex-direction: column; }
+      nav {
+        width: 100%;
+        border-right: none;
+        padding: 15px 20px;
+        position: static;
+        height: auto;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 10px 15px;
+      }
+      nav .title { margin: 0; padding: 0; font-size: 0.95rem; color: #999; }
+      nav .title::after { content: '|'; color: #ddd; margin-left: 15px; font-weight: 100; }
+      nav ul { display: flex; gap: 20px; }
+      nav ul li { margin: 0; }
+      nav ul li a { font-size: 0.95rem; }
+      main { padding: 0; }
+      .hero, main > section:first-of-type { padding-top: 40px; }
+      section { padding: 60px 20px; }
+      .hero h1 { font-size: 2.5rem; }
+      .location-section, .location-section:nth-child(even) { flex-direction: column; }
+      .map-container { height: 300px; margin-bottom: 30px; }
+      .location-info { text-align: center; }
+      .fullscreen-menu .overlay-img {
+        width: 60%; max-width: 250px; height: auto; bottom: 10vh; left: 50%;
+        transform: translateX(-50%); right: auto;
+      }
     }
   </style>
 </head>
@@ -75,6 +98,7 @@
       <li><a href="elements.html">THE MAKING</a></li>
       <li><a href="reservation.html">RESERVATION</a></li>
     </ul>
+    <img src="./assets/overlay_sketch.png" alt="Overlay Image" class="overlay-img" />
   </div>
 
   <div class="layout">
@@ -87,31 +111,33 @@
     </nav>
 
     <main>
-      <div class="hero"><h1>LOCATION</h1></div>
+      <div class="hero">
+        <h1>LOCATION</h1>
+      </div>
 
       <section>
         <div class="location-section">
-          <div class="map-container" id="map-suwon"><div class="map-error"></div></div>
+          <div class="map-container" id="map-suwon"></div>
           <div class="location-info">
             <h3>수원점</h3>
             <p>경기 수원시 권선구 권선로 750 1,2층</p>
-            <p>Tel 031.224.2587 / 010.9779.2587<br />Open AM 10:00 - PM 19:00</p>
+            <p>Tel 031.224.2587 / 010.9779.2587<br>Open AM 10:00 - PM 19:00</p>
           </div>
         </div>
 
         <div class="location-section">
-          <div class="map-container" id="map-ansan"><div class="map-error"></div></div>
+          <div class="map-container" id="map-ansan"></div>
           <div class="location-info">
             <h3>안산점</h3>
             <p>경기 안산시 단원구 이삭로 38 1층</p>
-            <p>Tel 031.414.2587 / 010.7236.2587<br />Open AM 10:00 - PM 19:00</p>
+            <p>Tel 031.414.2587 / 010.7236.2587<br>Open AM 10:00 - PM 19:00</p>
           </div>
         </div>
       </section>
 
       <section class="cta">
         <h2>가장 가까운 VANIA에서 당신의 수트를 만나보세요.</h2>
-        <a href="reservation.html" target="_blank" rel="noopener">온라인 예약하기</a>
+        <a href="reservation.html" target="_blank">온라인 예약하기</a>
       </section>
     </main>
   </div>
@@ -119,83 +145,65 @@
   <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
 
   <footer>
-    VANIA<br />
-    상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br />
+    VANIA<br/>
+    상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br/>
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
 
-  <!-- ✅ 네이버 지도: 단 하나의 스크립트만, oapi + ncpClientId + callback -->
-  <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb&callback=initNaverMaps" defer></script>
-
+  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb&callback=initNaverMaps" defer></script>
   <script>
-    function openMenu(){ document.getElementById("fullscreenMenu")?.classList.add("active"); }
-    function closeMenu(){ document.getElementById("fullscreenMenu")?.classList.remove("active"); }
+    function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
+    function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
 
-    // 콜백: 네이버 스크립트 로드 후 실행
-    function initNaverMaps(){
-      const safeCreate = (id, lat, lng, name) => {
-        const wrap = document.getElementById(id);
-        if(!wrap) return;
-
-        const showError = (msg) => {
-          const box = wrap.querySelector(".map-error");
-          if(box){ box.textContent = msg; box.style.display = "flex"; }
-        };
-
-        // naver 객체가 없으면 즉시 표시
-        if(!(window.naver && window.naver.maps)){
-          showError("지도를 불러오지 못했습니다. 잠시 후 새로고침 해주세요.");
+    function initNaverMaps() {
+      // 지도 생성 함수
+      function createMap(mapId, lat, lng, storeName) {
+        // 네이버 API가 로드되지 않았거나, 지도 div가 없으면 함수 종료
+        if (!window.naver || !window.naver.maps || !document.getElementById(mapId)) {
           return;
         }
 
-        // 컨테이너 레이아웃이 아직이면 대기 (모바일 빈칸 방지)
-        const ready = () => {
-          const r = wrap.getBoundingClientRect();
-          return r.width >= 50 && r.height >= 50;
+        const mapOptions = {
+          center: new naver.maps.LatLng(lat, lng),
+          zoom: 17,
+          scrollWheel: false, // 마우스 휠로 확대/축소 비활성화
+          zoomControl: true, // 확대/축소 컨트롤 표시
+          zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
         };
-        const waitUntil = (fn, tries=20) => new Promise(res=>{
-          const tick = () => (fn() || --tries<=0) ? res() : setTimeout(tick, 120);
-          tick();
+
+        const map = new naver.maps.Map(mapId, mapOptions);
+        const marker = new naver.maps.Marker({
+          position: new naver.maps.LatLng(lat, lng),
+          map: map
         });
 
-        waitUntil(ready).then(()=>{
-          try{
-            const center = new naver.maps.LatLng(lat, lng);
-            const map = new naver.maps.Map(id, {
-              center: center,
-              zoom: 17,
-              scrollWheel: false,
-              zoomControl: true,
-              zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
-            });
-            const marker = new naver.maps.Marker({ position: center, map });
-            const link = "https://map.naver.com/p/search/" + encodeURIComponent(name);
-            new naver.maps.InfoWindow({
-              content: `<div style="padding:10px;font-weight:bold;text-align:center;">
-                         <a href="${link}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">${name}</a>
-                       </div>`
-            }).open(map, marker);
-
-            addEventListener("resize", () => map.refresh());
-            document.addEventListener("visibilitychange", () => { if(!document.hidden) map.refresh(); });
-          }catch(e){
-            console.error(e);
-            showError("지도를 표시하는 중 오류가 발생했습니다.");
-          }
+        const naverMapUrl = "https://map.naver.com/p/search/" + encodeURIComponent(storeName);
+        const infoWindow = new naver.maps.InfoWindow({
+          content: `<div style="padding:10px;font-weight:bold;text-align:center;">
+                      <a href="${naverMapUrl}" target="_blank" style="text-decoration:none; color:inherit;">${storeName}</a>
+                    </div>`,
+          borderColor: '#555'
         });
-      };
+        
+        // 마커 위에 정보창 열기
+        infoWindow.open(map, marker);
 
-      safeCreate("map-suwon", 37.2572704171271, 127.032962472617, "바니아 수원점");
-      safeCreate("map-ansan", 37.3138714865728, 126.840948045105, "바니아 안산점");
+        // 창 크기 변경 시 지도 새로고침 (반응형 대응)
+        window.addEventListener("resize", () => map.refresh());
+      }
 
-      // 스크롤 탑 버튼
-      const btn = document.getElementById("scrollToTopBtn");
-      if(btn){
-        addEventListener("scroll", () => {
-          const top = document.body.scrollTop || document.documentElement.scrollTop;
-          btn.classList.toggle("show", top > 100);
-        }, { passive:true });
-        btn.addEventListener("click", () => window.scrollTo({ top:0, behavior:"smooth" }));
+      // 각 지점의 지도 생성 실행
+      createMap('map-suwon', 37.2572704171271, 127.032962472617, '바니아 수원점');
+      createMap('map-ansan', 37.3138714865728, 126.840948045105, '바니아 안산점');
+
+      // 맨 위로 가기 버튼
+      const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+      if (scrollToTopBtn) {
+        window.addEventListener("scroll", () => {
+          const isScrolled = document.body.scrollTop > 100 || document.documentElement.scrollTop > 100;
+          scrollToTopBtn.classList.toggle("show", isScrolled);
+        }, { passive: true });
+        scrollToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       }
     }
   </script>
