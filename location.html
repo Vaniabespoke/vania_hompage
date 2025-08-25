@@ -51,25 +51,60 @@
       header { border-bottom: none; }
       .layout { flex-direction: column; }
       nav {
-        width: 100%; border-right: none; padding: 15px 20px; position: static; height: auto;
-        border-bottom: 1px solid #eee; display: flex; justify-content: center; align-items: baseline;
-        flex-wrap: wrap; gap: 10px 15px;
+        width: 100%;
+        border-right: none;
+        padding: 15px 20px;
+        position: static;
+        height: auto;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 10px 15px;
       }
-      nav .title { margin: 0; padding: 0; font-size: 0.95rem; color: #999; }
-      nav .title::after { content: '|'; color: #ddd; margin-left: 15px; font-weight: 100; }
-      nav ul { display: flex; gap: 20px; }
+      nav .title {
+        margin: 0;
+        padding: 0;
+        font-size: 0.95rem;
+        color: #999;
+      }
+      nav .title::after {
+        content: '|';
+        color: #ddd;
+        margin-left: 15px;
+        font-weight: 100;
+      }
+      nav ul {
+        display: flex;
+        gap: 20px;
+      }
       nav ul li { margin: 0; }
-      nav ul li a { font-size: 0.95rem; }
+      nav ul li a {
+        font-size: 0.95rem;
+      }
       main { padding: 0; }
-      .hero, main > section:first-of-type { padding-top: 40px; }
+      .hero, main > section:first-of-type {
+        padding-top: 40px;
+      }
       section { padding: 60px 20px; }
       .hero h1 { font-size: 2.5rem; }
       .location-section, .location-section:nth-child(even) { flex-direction: column; }
-      .map-container { height: 300px; margin-bottom: 30px; }
-      .location-info { text-align: center; }
+      .map-container {
+        height: 300px;
+        margin-bottom: 30px;
+      }
+      .location-info {
+        text-align: center;
+      }
       .fullscreen-menu .overlay-img {
-        width: 60%; max-width: 250px; height: auto; bottom: 10vh; left: 50%;
-        transform: translateX(-50%); right: auto;
+        width: 60%;
+        max-width: 250px;
+        height: auto;
+        bottom: 10vh;
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
       }
     }
   </style>
@@ -105,7 +140,7 @@
       </div>
       <section>
         <div class="location-section">
-          <div class="map-container" id="map-suwon" data-lat="37.2572704171271" data-lng="127.032962472617" data-store="바니아 수원점"></div>
+          <div class="map-container" id="map-suwon"></div>
           <div class="location-info">
             <h3>수원점</h3>
             <p>경기 수원시 권선구 권선로 750 1,2층</p>
@@ -113,8 +148,8 @@
           </div>
         </div>
         <div class="location-section">
-          <div class="map-container" id="map-ansan" data-lat="37.3138714865728" data-lng="126.840948045105" data-store="바니아 안산점"></div>
-          <div class="location-info">
+          <div class="map-container" id="map-ansan"></div>
+          <div class.location-info">
             <h3>안산점</h3>
             <p>경기 안산시 단원구 이삭로 38 1층</p>
             <p>Tel 031.414.2587 / 010.7236.2587<br>Open AM 10:00 - PM 19:00</p>
@@ -133,72 +168,39 @@
     상호 : 바니아 안산점  |  대표자 : 문희철  |  사업자등록번호 : 203-04-31793  |  통신판매업신고번호 : 제 2022-경기안산-2131<br/>
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
-  
-  <!-- 인증이 정상적으로 되는 원래의 스크립트 태그 -->
   <script data-cfasync="false" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=byr4vc12fb"></script>
   <script>
     function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
     function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
 
-    // ▼▼▼ 페이지의 모든 HTML 요소가 준비되면 스크립트 실행 ▼▼▼
-    document.addEventListener('DOMContentLoaded', () => {
+    // ▼▼▼ 스크립트 수정 시작 ▼▼▼
 
-      const mapContainers = document.querySelectorAll('.map-container');
+    // 생성된 지도 객체들을 저장할 배열
+    let maps = [];
 
-      // 지도 생성 함수 (기존과 동일)
-      function createMap(mapId, lat, lng, storeName) {
-        if (!window.naver || !window.naver.maps) {
-          console.error('Naver Map API is not loaded yet.');
-          return;
-        }
-        const coords = new naver.maps.LatLng(lat, lng);
-        const map = new naver.maps.Map(mapId, { center: coords, zoom: 17, scrollWheel: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT } });
-        const marker = new naver.maps.Marker({ position: coords, map: map });
-        const naverMapUrl = "https://map.naver.com/p/search/" + encodeURIComponent(storeName);
-        const infoWindowContent = `<div style="padding:10px;font-weight:bold;text-align:center;"><a href="${naverMapUrl}" target="_blank" style="text-decoration:none; color:inherit;">${storeName}</a></div>`;
-        const infoWindow = new naver.maps.InfoWindow({ content: infoWindowContent, borderColor: '#555' });
-        infoWindow.open(map, marker);
-      }
+    // 지도 생성 함수
+    function createMap(mapId, lat, lng, storeName) {
+      if (!window.naver || !window.naver.maps) return;
+      const coords = new naver.maps.LatLng(lat, lng);
+      const map = new naver.maps.Map(mapId, { center: coords, zoom: 17, scrollWheel: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT } });
+      const marker = new naver.maps.Marker({ position: coords, map: map });
+      const naverMapUrl = "https://map.naver.com/p/search/" + encodeURIComponent(storeName);
+      const infoWindowContent = `<div style="padding:10px;font-weight:bold;text-align:center;"><a href="${naverMapUrl}" target="_blank" style="text-decoration:none; color:inherit;">${storeName}</a></div>`;
+      const infoWindow = new naver.maps.InfoWindow({ content: infoWindowContent, borderColor: '#555' });
+      naver.maps.Event.addListener(marker, "click", function() { window.open(naverMapUrl, "_blank"); });
+      infoWindow.open(map, marker);
 
-      // IntersectionObserver 지원 여부 확인
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries, observer) => {
-          entries.forEach(entry => {
-            // entry.isIntersecting: 요소가 화면에 보이는지 여부 (true/false)
-            if (entry.isIntersecting) {
-              const container = entry.target;
-              const { id, dataset } = container;
-              
-              // 네이버 지도 API가 로드되었는지 최종 확인 후 생성
-              if (window.naver && window.naver.maps) {
-                 createMap(id, dataset.lat, dataset.lng, dataset.store);
-              } else {
-                 // API 로드가 아주 늦어지는 예외적인 경우를 위해, 0.5초 뒤에 한번 더 시도
-                 setTimeout(() => createMap(id, dataset.lat, dataset.lng, dataset.store), 500);
-              }
-              // 한번 생성된 지도는 다시 관찰할 필요가 없으므로 관찰 중지
-              observer.unobserve(container);
-            }
-          });
-        });
+      // 생성된 지도 객체를 배열에 저장
+      maps.push(map); 
+    }
 
-        // 모든 지도 컨테이너에 대한 관찰 시작
-        mapContainers.forEach(container => {
-          observer.observe(container);
-        });
-      } else {
-        // IntersectionObserver를 지원하지 않는 구형 브라우저를 위한 대체 코드 (기존 방식)
-        window.onload = function() {
-          setTimeout(() => {
-            mapContainers.forEach(container => {
-              const { id, dataset } = container;
-              createMap(id, dataset.lat, dataset.lng, dataset.store);
-            });
-          }, 300);
-        }
-      }
-
-      // 스크롤 탑 버튼 (기존과 동일)
+    // 페이지 로딩이 완료되면 지도 생성 (롤백된 코드와 동일)
+    window.onload = function () {
+      setTimeout(() => {
+        createMap('map-suwon', 37.2572704171271, 127.032962472617, '바니아 수원점');
+        createMap('map-ansan', 37.3138714865728, 126.840948045105, '바니아 안산점');
+      }, 300);
+      
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (scrollToTopBtn) {
         window.onscroll = function () {
@@ -210,7 +212,26 @@
         };
         scrollToTopBtn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
       }
+    };
+
+    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+    // ★★★ 여기가 모바일/리사이징 문제 해결의 핵심 ★★★
+    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      // 이전에 설정된 타이머가 있다면 취소 (불필요한 반복 실행 방지)
+      clearTimeout(resizeTimer);
+      // 200ms(0.2초) 뒤에 지도 새로고침 실행
+      resizeTimer = setTimeout(function() {
+        // 저장된 모든 지도에 대해 refresh 명령 실행
+        if(maps.length > 0) {
+          maps.forEach(function(map) {
+            map.refresh();
+          });
+        }
+      }, 200);
     });
+    // ▲▲▲ 스크립트 수정 끝 ▲▲▲
   </script>
 </body>
 </html>
