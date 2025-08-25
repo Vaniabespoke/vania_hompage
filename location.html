@@ -105,11 +105,7 @@
       </div>
       <section>
         <div class="location-section">
-          <!-- ▼▼▼ 지도 정보를 HTML 태그에 직접 저장합니다 ▼▼▼ -->
-          <div class="map-container" id="map-suwon"
-               data-lat="37.2572704171271" 
-               data-lng="127.032962472617" 
-               data-store="바니아 수원점"></div>
+          <div class="map-container" id="map-suwon" data-lat="37.2572704171271" data-lng="127.032962472617" data-store="바니아 수원점"></div>
           <div class="location-info">
             <h3>수원점</h3>
             <p>경기 수원시 권선구 권선로 750 1,2층</p>
@@ -117,10 +113,7 @@
           </div>
         </div>
         <div class="location-section">
-          <div class="map-container" id="map-ansan"
-               data-lat="37.3138714865728"
-               data-lng="126.840948045105"
-               data-store="바니아 안산점"></div>
+          <div class="map-container" id="map-ansan" data-lat="37.3138714865728" data-lng="126.840948045105" data-store="바니아 안산점"></div>
           <div class="location-info">
             <h3>안산점</h3>
             <p>경기 안산시 단원구 이삭로 38 1층</p>
@@ -141,74 +134,83 @@
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
   
-  <!-- ▼▼▼ 인증이 정상적으로 되는 원래의 스크립트 태그를 그대로 사용합니다 ▼▼▼ -->
+  <!-- 인증이 정상적으로 되는 원래의 스크립트 태그 -->
   <script data-cfasync="false" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=byr4vc12fb"></script>
   <script>
     function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
     function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
 
-    // ▼▼▼ 모바일 문제를 해결하기 위해 IntersectionObserver 방식으로 변경합니다 ▼▼▼
+    // ▼▼▼ 페이지의 모든 HTML 요소가 준비되면 스크립트 실행 ▼▼▼
     document.addEventListener('DOMContentLoaded', () => {
+
       const mapContainers = document.querySelectorAll('.map-container');
+
+      // 지도 생성 함수 (기존과 동일)
+      function createMap(mapId, lat, lng, storeName) {
+        if (!window.naver || !window.naver.maps) {
+          console.error('Naver Map API is not loaded yet.');
+          return;
+        }
+        const coords = new naver.maps.LatLng(lat, lng);
+        const map = new naver.maps.Map(mapId, { center: coords, zoom: 17, scrollWheel: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT } });
+        const marker = new naver.maps.Marker({ position: coords, map: map });
+        const naverMapUrl = "https://map.naver.com/p/search/" + encodeURIComponent(storeName);
+        const infoWindowContent = `<div style="padding:10px;font-weight:bold;text-align:center;"><a href="${naverMapUrl}" target="_blank" style="text-decoration:none; color:inherit;">${storeName}</a></div>`;
+        const infoWindow = new naver.maps.InfoWindow({ content: infoWindowContent, borderColor: '#555' });
+        infoWindow.open(map, marker);
+      }
 
       // IntersectionObserver 지원 여부 확인
       if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries, observer) => {
           entries.forEach(entry => {
+            // entry.isIntersecting: 요소가 화면에 보이는지 여부 (true/false)
             if (entry.isIntersecting) {
               const container = entry.target;
-              // 네이버 지도 API가 로드되었는지 확인 후 지도 생성
+              const { id, dataset } = container;
+              
+              // 네이버 지도 API가 로드되었는지 최종 확인 후 생성
               if (window.naver && window.naver.maps) {
-                createMapFromElement(container);
+                 createMap(id, dataset.lat, dataset.lng, dataset.store);
               } else {
-                // API 로드가 늦어지는 경우를 대비해 약간의 지연 후 재시도
-                setTimeout(() => createMapFromElement(container), 200);
+                 // API 로드가 아주 늦어지는 예외적인 경우를 위해, 0.5초 뒤에 한번 더 시도
+                 setTimeout(() => createMap(id, dataset.lat, dataset.lng, dataset.store), 500);
               }
+              // 한번 생성된 지도는 다시 관찰할 필요가 없으므로 관찰 중지
               observer.unobserve(container);
             }
           });
         });
 
-        mapContainers.forEach(container => observer.observe(container));
+        // 모든 지도 컨테이너에 대한 관찰 시작
+        mapContainers.forEach(container => {
+          observer.observe(container);
+        });
       } else {
-        // 구형 브라우저를 위해 기존 방식(setTimeout)을 예비로 남겨둡니다.
-        setTimeout(() => {
-          mapContainers.forEach(container => createMapFromElement(container));
-        }, 300);
+        // IntersectionObserver를 지원하지 않는 구형 브라우저를 위한 대체 코드 (기존 방식)
+        window.onload = function() {
+          setTimeout(() => {
+            mapContainers.forEach(container => {
+              const { id, dataset } = container;
+              createMap(id, dataset.lat, dataset.lng, dataset.store);
+            });
+          }, 300);
+        }
+      }
+
+      // 스크롤 탑 버튼 (기존과 동일)
+      const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+      if (scrollToTopBtn) {
+        window.onscroll = function () {
+          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            scrollToTopBtn.classList.add("show");
+          } else {
+            scrollToTopBtn.classList.remove("show");
+          }
+        };
+        scrollToTopBtn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
       }
     });
-
-    // HTML 요소로부터 정보를 읽어 지도를 생성하는 함수
-    function createMapFromElement(container) {
-      const { id, dataset } = container;
-      createMap(id, dataset.lat, dataset.lng, dataset.store);
-    }
-
-    // 지도 생성 핵심 함수 (롤백된 버전과 동일)
-    function createMap(mapId, lat, lng, storeName) {
-      if (!window.naver || !window.naver.maps) return;
-      const coords = new naver.maps.LatLng(lat, lng);
-      const map = new naver.maps.Map(mapId, { center: coords, zoom: 17, scrollWheel: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT } });
-      const marker = new naver.maps.Marker({ position: coords, map: map });
-      const naverMapUrl = "https://map.naver.com/p/search/" + encodeURIComponent(storeName);
-      const infoWindowContent = `<div style="padding:10px;font-weight:bold;text-align:center;"><a href="${naverMapUrl}" target="_blank" style="text-decoration:none; color:inherit;">${storeName}</a></div>`;
-      const infoWindow = new naver.maps.InfoWindow({ content: infoWindowContent, borderColor: '#555' });
-      naver.maps.Event.addListener(marker, "click", function() { window.open(naverMapUrl, "_blank"); });
-      infoWindow.open(map, marker);
-    }
-    
-    // 스크롤 탑 버튼 (롤백된 버전과 동일)
-    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
-    if (scrollToTopBtn) {
-      window.onscroll = function () {
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-          scrollToTopBtn.classList.add("show");
-        } else {
-          scrollToTopBtn.classList.remove("show");
-        }
-      };
-      scrollToTopBtn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
-    }
   </script>
 </body>
 </html>
