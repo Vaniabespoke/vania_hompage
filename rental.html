@@ -32,7 +32,7 @@
     .tab-btn { background: none; border: none; font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 600; padding: 10px 5px; cursor: pointer; color: #888; position: relative; bottom: -1px; border-bottom: 3px solid transparent; transition: all 0.2s ease-in-out; }
     .tab-btn.active { color: #111; border-bottom-color: #111; }
     .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.5s; } /* display: grid에서 block으로 변경 */
+    .tab-content.active { display: block; animation: fadeIn 0.5s; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     footer { text-align: center; font-size: 0.9rem; color: #666; padding: 40px 20px 60px; border-top: 1px solid #eee; background-color: #fafafa; }
     .rental-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
@@ -45,7 +45,6 @@
     .rental-card:hover::after { opacity: 1; }
     #modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; display: flex; justify-content:center; align-items:center; flex-direction:column; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     #modal.show { opacity: 1; pointer-events: auto; }
-    #modal img { max-width: 90%; max-height: 80vh; border-radius: 10px; object-fit: contain; }
     .modal-nav { position: absolute; background: none; border: none; color: white; font-size: 2.5rem; cursor: pointer; top: 50%; transform: translateY(-50%); z-index: 2001; padding: 10px 20px; }
     #prevBtn { left: 20px; }
     #nextBtn { right: 20px; }
@@ -55,6 +54,27 @@
     #scrollToTopBtn.show { display: block; opacity: 1; }
     #scrollToTopBtn:hover { background-color: black; transform: scale(1.1); }
     
+    /* ▼▼▼▼▼ CSS 수정: 슬라이더 구조를 위한 스타일 추가 ▼▼▼▼▼ */
+    .modal-image-container {
+      width: 100%;
+      max-width: 90%;
+      max-height: 80vh;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+    #modal-slider-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.4s ease-in-out; /* 슬라이드 애니메이션 */
+    }
+    #modal-slider-track img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      flex-shrink: 0; /* 이미지가 줄어들지 않도록 설정 */
+    }
+    /* ▲▲▲▲▲ CSS 수정 ▲▲▲▲▲ */
+
     @media (max-width: 768px) {
       header { border-bottom: none; }
       .layout { flex-direction: column; }
@@ -68,10 +88,12 @@
       .fullscreen-menu .overlay-img { width: 60%; max-width: 250px; height: auto; bottom: 10vh; left: 50%; transform: translateX(-50%); right: auto; }
       .tab-menu { justify-content: center; }
       .tab-btn { font-size: 1.1rem; }
+      .modal-nav { display: none; }
     }
   </style>
 </head>
 <body>
+  <!-- HTML, header, nav 등은 이전과 동일 -->
   <header>
     <div class="header-content">
       <div class="menu-icon" onclick="openMenu()">☰</div>
@@ -105,9 +127,6 @@
         <button class="tab-btn" data-tab="ansan">안산점</button>
       </div>
       
-      <!-- ▼▼▼▼▼ 여기가 핵심 수정사항 ▼▼▼▼▼ -->
-      <!-- 수정된 구조: 바깥쪽에 tab-content, 안쪽에 rental-gallery -->
-
       <div id="suwon" class="tab-content active">
         <div class="rental-gallery">
           <div class="rental-card"><img src="./assets/rental/suwon/rental1.png" alt="네이비" /><div class="overlay-text">네이비</div></div>
@@ -157,19 +176,22 @@
           <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental24.png" alt="화이트 더블" /><div class="overlay-text">화이트 더블</div></div>
           <div class="rental-card"><img src="./assets/rental/ansan/rental25.png" alt="화이트 스트라이프" /><div class="overlay-text">화이트 스트라이프</div></div>
           <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental26.png" alt="화이트피크드 턱시도" /><div class="overlay-text">화이트피크드 턱시도</div></div>
-
         </div>
       </div>
-
-      <!-- ▲▲▲▲▲ 여기가 핵심 수정사항 ▲▲▲▲▲ -->
-
+      
+      <!-- ▼▼▼▼▼ HTML 수정: 모달 내부 구조 변경 ▼▼▼▼▼ -->
       <div id="modal">
         <button id="prevBtn" class="modal-nav">←</button>
-        <img id="modalImage" src="" alt="Modal Image" />
+        <div class="modal-image-container">
+            <div id="modal-slider-track">
+                <!-- 자바스크립트가 여기에 img 태그들을 생성합니다. -->
+            </div>
+        </div>
         <button id="nextBtn" class="modal-nav">→</button>
         <button id="closeBtn">✕</button>
         <div id="modalLabel"></div>
       </div>
+      <!-- ▲▲▲▲▲ HTML 수정 ▲▲▲▲▲ -->
     </main>
   </div>
   <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
@@ -179,33 +201,69 @@
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
 
+  <!-- ▼▼▼▼▼ SCRIPT 전체 로직 수정 ▼▼▼▼▼ -->
   <script>
-    // 자바스크립트는 변경할 필요가 없습니다. 이전과 동일합니다.
     function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
     function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
     
     document.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById('modal');
-      const modalImage = document.getElementById('modalImage');
+      const modalTrack = document.getElementById('modal-slider-track'); // 수정
       const modalLabel = document.getElementById('modalLabel');
       const allRentalCards = document.querySelectorAll('.rental-card');
       const tabBtns = document.querySelectorAll('.tab-btn');
       const tabContents = document.querySelectorAll('.tab-content');
 
+      const galleries = {};
+      tabContents.forEach(tab => {
+        const tabId = tab.id;
+        galleries[tabId] = [];
+        tab.querySelectorAll('.rental-card').forEach(card => {
+          const img = card.querySelector('img');
+          const label = card.querySelector('.overlay-text').textContent;
+          const src = img.getAttribute('src');
+          const base = src.substring(0, src.lastIndexOf('.png'));
+          const count = card.hasAttribute('data-image-count') ? 1 : 2;
+          
+          for (let i = 0; i < count; i++) {
+            const imageUrl = i === 0 ? `${base}.png` : `${base}-${i + 1}.png`;
+            galleries[tabId].push({ src: imageUrl, label: label });
+          }
+        });
+      });
+
       let currentImageGroup = [];
       let currentSlideIndex = 0;
 
-      function updateModal() {
-        if (currentImageGroup.length > 0) {
-          modalImage.src = currentImageGroup[currentSlideIndex];
-        }
+      // 슬라이드를 특정 위치로 이동시키는 함수
+      function goToSlide(index) {
+        if (!modalTrack) return;
+        modalTrack.style.transform = `translateX(-${index * 100}%)`;
+        modalLabel.textContent = currentImageGroup[index].label;
+        currentSlideIndex = index;
       }
 
-      function openModal(imageGroup, label) {
+      function openModal(imageGroup, startIndex) {
         currentImageGroup = imageGroup;
-        currentSlideIndex = 0;
-        modalLabel.textContent = label;
-        updateModal();
+        modalTrack.innerHTML = ''; // 트랙 초기화
+
+        // 모든 이미지를 트랙에 추가
+        imageGroup.forEach(item => {
+          const imgElement = document.createElement('img');
+          imgElement.src = item.src;
+          imgElement.alt = item.label;
+          modalTrack.appendChild(imgElement);
+        });
+
+        // 애니메이션 없이 시작 위치로 즉시 이동
+        modalTrack.style.transition = 'none';
+        goToSlide(startIndex);
+
+        // 약간의 딜레이 후 애니메이션 다시 활성화 (깜빡임 방지)
+        setTimeout(() => {
+          modalTrack.style.transition = 'transform 0.4s ease-in-out';
+        }, 50);
+
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
       }
@@ -213,14 +271,12 @@
       function closeModal() {
         modal.classList.remove('show');
         document.body.style.overflow = 'auto';
-        currentImageGroup = [];
       }
-
+      
       function changeSlide(direction) {
-        if (currentImageGroup.length > 0) {
-          currentSlideIndex = (currentSlideIndex + direction + currentImageGroup.length) % currentImageGroup.length;
-          updateModal();
-        }
+        const totalSlides = currentImageGroup.length;
+        const newIndex = (currentSlideIndex + direction + totalSlides) % totalSlides;
+        goToSlide(newIndex);
       }
 
       tabBtns.forEach(button => {
@@ -234,15 +290,14 @@
 
       allRentalCards.forEach(card => {
         card.addEventListener('click', () => {
-          const img = card.querySelector('img');
-          const label = card.querySelector('.overlay-text').textContent;
-          const src = img.getAttribute('src');
-          const base = src.substring(0, src.lastIndexOf('.png'));
-          const count = parseInt(card.dataset.imageCount || '2', 10);
-          const imageGroup = Array.from({ length: count }, (_, i) => {
-            return i === 0 ? `${base}.png` : `${base}-${i + 1}.png`;
-          });
-          openModal(imageGroup, label);
+          const activeTabId = document.querySelector('.tab-content.active').id;
+          const fullGalleryForTab = galleries[activeTabId];
+          const clickedImgSrc = card.querySelector('img').getAttribute('src');
+          const startIndex = fullGalleryForTab.findIndex(item => item.src === clickedImgSrc);
+
+          if (startIndex !== -1) {
+            openModal(fullGalleryForTab, startIndex);
+          }
         });
       });
 
@@ -250,7 +305,9 @@
       document.getElementById('nextBtn').onclick = () => changeSlide(1);
       document.getElementById('closeBtn').onclick = closeModal;
       modal.addEventListener('click', (e) => {
-        if (e.target.id === 'modal') closeModal();
+        if (e.target.id === 'modal' || e.target.classList.contains('modal-image-container')) {
+          closeModal();
+        }
       });
 
       window.addEventListener('keydown', e => {
@@ -260,6 +317,30 @@
           else if (e.key === 'Escape') closeModal();
         }
       });
+      
+      let touchStartX = 0;
+      let touchEndX = 0;
+      const minSwipeDistance = 50;
+
+      modal.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      modal.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, { passive: true });
+
+      function handleSwipe() {
+        const swipeDistance = touchEndX - touchStartX;
+        if (Math.abs(swipeDistance) > minSwipeDistance) {
+          if (swipeDistance < 0) {
+            changeSlide(1);
+          } else {
+            changeSlide(-1);
+          }
+        }
+      }
 
       const scrollToTopBtn = document.getElementById("scrollToTopBtn");
       if (scrollToTopBtn) {
