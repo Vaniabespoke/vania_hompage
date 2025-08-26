@@ -117,19 +117,19 @@
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
 
-  <!-- 1) 콜백: 먼저 전역 선언 -->
   <script>
+    // 전역 콜백
     window.initNaverMaps = function () {
       const build = (mapId, lat, lng, name) => {
         const wrap = document.getElementById(mapId);
         if (!wrap || !(window.naver && naver.maps)) return;
 
-        const error = (msg) => {
+        const showError = (msg) => {
           const box = wrap.querySelector('.map-error');
           if (box) { box.style.display = 'flex'; box.innerHTML = msg; }
         };
 
-        // 초기 레이아웃 0px 방지
+        // 0px 초기화 방지: 실제 크기 확보될 때까지 대기
         let tries = 20;
         (function wait(){
           const w = wrap.clientWidth, h = wrap.clientHeight;
@@ -140,7 +140,8 @@
         function start(){
           try{
             const center = new naver.maps.LatLng(lat, lng);
-            const map = new naver.maps.Map(mapId, {
+            // ★ 엘리먼트를 직접 전달(안전)
+            const map = new naver.maps.Map(wrap, {
               center, zoom: 17, scrollWheel: false,
               zoomControl: true,
               zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
@@ -154,7 +155,7 @@
                         </div>`
             }).open(map, center);
 
-            // 폭 변경 대응(회색칸 방지)
+            // 크기/회전/가시성 변화에 강제 리프레시
             const refresh = () => {
               map.setSize(new naver.maps.Size(wrap.clientWidth, wrap.clientHeight));
               naver.maps.Event.trigger(map, 'resize');
@@ -166,7 +167,7 @@
             document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
           }catch(e){
             console.error(e);
-            error('지도 초기화 중 오류가 발생했습니다.');
+            showError('지도 초기화 중 오류가 발생했습니다.');
           }
         }
       };
@@ -175,7 +176,7 @@
       build('map-ansan', 37.3138714865728, 126.840948045105, '바니아 안산점');
     };
 
-    // 2) 안전망: API가 안 뜨면 사유를 바로 보여줌(도메인/키 문제 탐지)
+    // API 미로드 감지(도메인/키/차단 안내)
     window.addEventListener('load', () => {
       setTimeout(() => {
         if (!(window.naver && naver.maps)) {
@@ -184,7 +185,7 @@
             e.innerHTML =
               '네이버 지도 API가 로드되지 않았습니다.<br>' +
               '· 스크립트 중복/차단 여부 확인<br>' +
-              '· NCP > Maps > Application > Service URL에 현재 도메인 등록(예: vania.co.kr, www.vania.co.kr, *.netlify.app, localhost)<br>' +
+              '· NCP > Application > Web 서비스 URL에 현재 도메인 등록(예: vania.co.kr, www.vania.co.kr, *.netlify.app, localhost)<br>' +
               '· 올바른 ncpClientId 사용 여부 확인';
           });
         }
@@ -192,8 +193,9 @@
     });
   </script>
 
-  <!-- 3) 네이버 지도 스크립트: oapi + ncpClientId + callback (단 1개만) -->
-   <script
+  <!-- 네이버 지도 스크립트: Rocket Loader 무시 -->
+  <script
+    data-cfasync="false"
     src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb&callback=initNaverMaps"
     defer
     onerror="document.querySelectorAll('.map-container .map-error').forEach(e=>{e.style.display='flex';e.textContent='지도 스크립트 로드 실패';});">
