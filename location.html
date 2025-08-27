@@ -138,6 +138,7 @@
         })();
 
         function start(){
+          console.log(`[지도 초기화 시작] ${mapId}`); // <-- 로그 추가 1
           try{
             const center = new naver.maps.LatLng(lat, lng);
             // 엘리먼트를 직접 전달(안전)
@@ -166,7 +167,9 @@
             addEventListener('orientationchange', () => setTimeout(refresh, 200));
             document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
           }catch(e){
+            console.log(`[지도 초기화 성공] ${mapId}`); // <-- 로그 추가 2
             console.error(e);
+            console.error(`[지도 초기화 실패] ${mapId}`, e); // <-- 로그 추가 3
             showError('지도 초기화 중 오류가 발생했습니다.');
           }
         }
