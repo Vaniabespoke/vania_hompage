@@ -118,88 +118,90 @@
   </footer>
 
   <script>
-    // 네이버 지도 콜백
-    window.initNaverMaps = function () {
-      const build = (mapId, lat, lng, name) => {
-        const wrap = document.getElementById(mapId);
-        if (!wrap || !(window.naver && naver.maps)) return;
+    // 페이지의 모든 리소스(CSS, 이미지 등)가 로드된 후 지도 초기화를 시작합니다.
+    window.addEventListener('load', function () {
+      // 네이버 지도 API 스크립트가 로드되었는지 확인
+      if (!(window.naver && naver.maps)) {
+        document.querySelectorAll('.map-container .map-error').forEach(e => {
+          e.style.display = 'flex';
+          e.innerHTML =
+            '네이버 지도 API를 불러오지 못했습니다.<br>' +
+            '네트워크 연결을 확인하거나 잠시 후 다시 시도해주세요.';
+        });
+        return; // 스크립트가 없으면 여기서 종료
+      }
+
+      // 지도 생성 함수
+      const buildMap = (mapId, lat, lng, name) => {
+        const mapContainer = document.getElementById(mapId);
+        if (!mapContainer) {
+          console.error(`지도 컨테이너 #${mapId}를 찾을 수 없습니다.`);
+          return;
+        }
 
         const showError = (msg) => {
-          const box = wrap.querySelector('.map-error');
-          if (box) { box.style.display = 'flex'; box.innerHTML = msg; }
+          const errorBox = mapContainer.querySelector('.map-error');
+          if (errorBox) {
+            errorBox.style.display = 'flex';
+            errorBox.innerHTML = msg;
+          }
         };
 
-        // 0px 초기화 방지: 실제 크기 확보될 때까지 대기
-        let tries = 20;
-        (function wait(){
-          const w = wrap.clientWidth, h = wrap.clientHeight;
-          if ((w>0 && h>0) || --tries<=0) start();
-          else setTimeout(wait, 120);
-        })();
+        try {
+          const mapOptions = {
+            center: new naver.maps.LatLng(lat, lng),
+            zoom: 17,
+            scrollWheel: false,
+            zoomControl: true,
+            zoomControlOptions: {
+              position: naver.maps.Position.TOP_RIGHT
+            }
+          };
 
-        function start(){
-          console.log(`[지도 초기화 시작] ${mapId}`); // <-- 로그 추가 1
-          try{
-            const center = new naver.maps.LatLng(lat, lng);
-            // 엘리먼트를 직접 전달(안전)
-            const map = new naver.maps.Map(wrap, {
-              center, zoom: 17, scrollWheel: false,
-              zoomControl: true,
-              zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
-            });
-            new naver.maps.Marker({ position: center, map });
+          const map = new naver.maps.Map(mapContainer, mapOptions);
+          new naver.maps.Marker({
+            position: mapOptions.center,
+            map: map
+          });
 
-            const link = "https://map.naver.com/p/search/" + encodeURIComponent(name);
-            new naver.maps.InfoWindow({
-              content: `<div style="padding:10px;text-align:center;font-weight:bold;">
-                          <a href="${link}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">${name}</a>
-                        </div>`
-            }).open(map, center);
+          const infoWindowLink = "https://map.naver.com/p/search/" + encodeURIComponent(name);
+          new naver.maps.InfoWindow({
+            content: `<div style="padding:10px;text-align:center;font-weight:bold;">
+                        <a href="${infoWindowLink}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">${name}</a>
+                      </div>`
+          }).open(map, mapOptions.center);
 
-            // 크기/회전/가시성 변화에 강제 리프레시
-            const refresh = () => {
-              map.setSize(new naver.maps.Size(wrap.clientWidth, wrap.clientHeight));
-              naver.maps.Event.trigger(map, 'resize');
-              map.setCenter(center);
-            };
-            if ('ResizeObserver' in window) new ResizeObserver(refresh).observe(wrap);
-            addEventListener('resize', refresh, { passive:true });
-            addEventListener('orientationchange', () => setTimeout(refresh, 200));
-            document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
-          }catch(e){
-            console.log(`[지도 초기화 성공] ${mapId}`); // <-- 로그 추가 2
-            console.error(e);
-            console.error(`[지도 초기화 실패] ${mapId}`, e); // <-- 로그 추가 3
-            showError('지도 초기화 중 오류가 발생했습니다.');
+          // 화면 크기 변경, 회전 등에 대응하여 지도 크기를 새로고침하는 로직
+          const refreshMap = () => {
+            map.setSize(new naver.maps.Size(mapContainer.clientWidth, mapContainer.clientHeight));
+            map.setCenter(mapOptions.center);
+          };
+
+          if ('ResizeObserver' in window) {
+            new ResizeObserver(refreshMap).observe(mapContainer);
           }
+          window.addEventListener('resize', refreshMap, { passive: true });
+          window.addEventListener('orientationchange', () => setTimeout(refreshMap, 200));
+          document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) refreshMap();
+          });
+
+        } catch (e) {
+          console.error(`지도 #${mapId} 초기화 중 오류 발생:`, e);
+          showError('지도 초기화 중 오류가 발생했습니다.');
         }
       };
 
-      build('map-suwon', 37.2572704171271, 127.032962472617, '바니아 수원점');
-      build('map-ansan', 37.3138714865728, 126.840948045105, '바니아 안산점');
-    };
-
-    // API 미로드 감지(도메인/키/차단 안내)
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        if (!(window.naver && naver.maps)) {
-          document.querySelectorAll('.map-container .map-error').forEach(e=>{
-            e.style.display='flex';
-            e.innerHTML =
-              '네이버 지도 API가 로드되지 않았습니다.<br>' +
-              '· 스크립트 중복/차단 여부 확인<br>' +
-              '· NCP > Application > Web 서비스 URL에 현재 도메인 등록(예: vania.co.kr, www.vania.co.kr, *.netlify.app, localhost)<br>' +
-              '· 올바른 ncpClientId 사용 여부 확인';
-          });
-        }
-      }, 1200);
+      // 각 지점의 지도를 생성합니다.
+      buildMap('map-suwon', 37.2572704171271, 127.032962472617, '바니아 수원점');
+      buildMap('map-ansan', 37.3138714865728, 126.840948045105, '바니아 안산점');
     });
   </script>
 
-  <!-- 네이버 지도 스크립트: Rocket Loader 우회 -->
+  <!-- 네이버 지도 스크립트: callback 파라미터를 제거하여 자동 실행을 막습니다. -->
   <script
     data-cfasync="false"
-    src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb&callback=initNaverMaps"
+    src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb"
     defer
     onerror="document.querySelectorAll('.map-container .map-error').forEach(e=>{e.style.display='flex';e.textContent='지도 스크립트 로드 실패';});">
   </script>
