@@ -118,7 +118,7 @@
   </footer>
 
   <script>
-    // 전역 콜백
+    // 네이버 지도 콜백
     window.initNaverMaps = function () {
       const build = (mapId, lat, lng, name) => {
         const wrap = document.getElementById(mapId);
@@ -140,7 +140,7 @@
         function start(){
           try{
             const center = new naver.maps.LatLng(lat, lng);
-            // ★ 엘리먼트를 직접 전달(안전)
+            // 엘리먼트를 직접 전달(안전)
             const map = new naver.maps.Map(wrap, {
               center, zoom: 17, scrollWheel: false,
               zoomControl: true,
@@ -193,7 +193,7 @@
     });
   </script>
 
-  <!-- 네이버 지도 스크립트: Rocket Loader 무시 -->
+  <!-- 네이버 지도 스크립트: Rocket Loader 우회 -->
   <script
     data-cfasync="false"
     src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=byr4vc12fb&callback=initNaverMaps"
