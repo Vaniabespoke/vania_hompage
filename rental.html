@@ -6,7 +6,8 @@
   <title>Rental - VANIA</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* 모바일 터치 시 파랗게 반짝이는 음영 완벽 제거 */
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Noto Serif KR', serif; color: #111; background-color: #fff; line-height: 1.8; display: flex; flex-direction: column; min-height: 100vh; }
     header { display: flex; align-items: center; padding: 20px 30px; font-size: 1.4rem; font-weight: bold; border-bottom: 1px solid #eee; position: fixed; top: 0; left: 0; width: 100%; background-color: white; z-index: 999; }
@@ -43,6 +44,7 @@
     .rental-card:hover .overlay-text { opacity: 1; }
     .rental-card::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.3s ease; z-index: 1; border-radius: 8px; }
     .rental-card:hover::after { opacity: 1; }
+    
     #modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; display: flex; justify-content:center; align-items:center; flex-direction:column; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     #modal.show { opacity: 1; pointer-events: auto; }
     #closeBtn { position: absolute; top: 30px; right: 40px; font-size: 2.5rem; background: none; border: none; color: white; cursor: pointer; z-index: 2002; transition: transform 0.2s; }
@@ -54,7 +56,7 @@
     #modal-slider-track { display: flex; height: 100%; transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
     #modal-slider-track img { width: 100%; max-height: 80vh; object-fit: contain; flex-shrink: 0; user-select: none; }
     
-    /* 좌우 투명 터치 영역 (화살표 대체) */
+    /* 좌우 투명 터치 영역 */
     .touch-area { position: absolute; top: 0; height: 100%; width: 50%; z-index: 10; cursor: pointer; }
     .touch-left { left: 0; }
     .touch-right { right: 0; }
@@ -228,24 +230,6 @@
       const tabBtns = document.querySelectorAll('.tab-btn');
       const tabContents = document.querySelectorAll('.tab-content');
 
-      const galleries = {};
-      tabContents.forEach(tab => {
-        const tabId = tab.id;
-        galleries[tabId] = [];
-        tab.querySelectorAll('.rental-card').forEach(card => {
-          const img = card.querySelector('img');
-          const label = card.querySelector('.overlay-text').textContent;
-          const src = img.getAttribute('src');
-          const base = src.substring(0, src.lastIndexOf('.png'));
-          const count = card.hasAttribute('data-image-count') ? 1 : 2;
-          
-          for (let i = 0; i < count; i++) {
-            const imageUrl = i === 0 ? `${base}.png` : `${base}-${i + 1}.png`;
-            galleries[tabId].push({ src: imageUrl, label: label });
-          }
-        });
-      });
-
       let currentImageGroup = [];
       let currentSlideIndex = 0;
 
@@ -264,26 +248,32 @@
         updateIndicators();
       }
 
-      function openModal(imageGroup, startIndex) {
+      function openModal(imageGroup) {
         currentImageGroup = imageGroup;
         modalTrack.innerHTML = '';
         indicatorsContainer.innerHTML = '';
 
+        // 클릭한 카드에 해당하는 1~2장의 이미지만 모달에 생성
         imageGroup.forEach((item, index) => {
-          // 이미지 생성
           const imgElement = document.createElement('img');
           imgElement.src = item.src;
           imgElement.alt = item.label;
           modalTrack.appendChild(imgElement);
 
-          // 하단 점(Dot) 생성
           const dot = document.createElement('div');
           dot.className = 'indicator-dot';
           indicatorsContainer.appendChild(dot);
         });
 
+        // 점이 1개면 안 보이게 처리 (선택사항, 1장일 땐 굳이 점이 필요 없으므로)
+        if(imageGroup.length <= 1) {
+            indicatorsContainer.style.display = 'none';
+        } else {
+            indicatorsContainer.style.display = 'flex';
+        }
+
         modalTrack.style.transition = 'none';
-        goToSlide(startIndex);
+        goToSlide(0); // 항상 첫 번째 사진부터 시작
 
         setTimeout(() => {
           modalTrack.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
@@ -300,13 +290,15 @@
       
       function changeSlide(direction) {
         const totalSlides = currentImageGroup.length;
+        if (totalSlides <= 1) return; // 이미지가 1장이면 넘어가지 않음
+        
         const newIndex = (currentSlideIndex + direction + totalSlides) % totalSlides;
         goToSlide(newIndex);
       }
 
       // 투명 터치 영역 클릭 이벤트 연결
       document.querySelector('.touch-left').addEventListener('click', (e) => {
-        e.stopPropagation(); // 배경 클릭 이벤트 방지
+        e.stopPropagation(); 
         changeSlide(-1);
       });
       document.querySelector('.touch-right').addEventListener('click', (e) => {
@@ -323,16 +315,24 @@
         });
       });
 
+      // 전체 리스트(66장)를 모으지 않고, 클릭한 카드의 사진(1~2장)만 배열로 만듦
       allRentalCards.forEach(card => {
         card.addEventListener('click', () => {
-          const activeTabId = document.querySelector('.tab-content.active').id;
-          const fullGalleryForTab = galleries[activeTabId];
-          const clickedImgSrc = card.querySelector('img').getAttribute('src');
-          const startIndex = fullGalleryForTab.findIndex(item => item.src === clickedImgSrc);
-
-          if (startIndex !== -1) {
-            openModal(fullGalleryForTab, startIndex);
+          const img = card.querySelector('img');
+          const label = card.querySelector('.overlay-text').textContent;
+          const src = img.getAttribute('src');
+          const base = src.substring(0, src.lastIndexOf('.png'));
+          
+          // 이미지가 1장인지 2장인지 판단 (data-image-count="1" 속성이 있으면 1장, 없으면 기본 2장)
+          const count = card.hasAttribute('data-image-count') ? 1 : 2;
+          
+          const cardImages = [];
+          for (let i = 0; i < count; i++) {
+            const imageUrl = i === 0 ? `${base}.png` : `${base}-${i + 1}.png`;
+            cardImages.push({ src: imageUrl, label: label });
           }
+
+          openModal(cardImages);
         });
       });
 
