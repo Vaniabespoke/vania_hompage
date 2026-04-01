@@ -43,35 +43,30 @@
     .rental-card:hover .overlay-text { opacity: 1; }
     .rental-card::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.3s ease; z-index: 1; border-radius: 8px; }
     .rental-card:hover::after { opacity: 1; }
-    #modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; display: flex; justify-content:center; align-items:center; flex-direction:column; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    #modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; display: flex; justify-content:center; align-items:center; flex-direction:column; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     #modal.show { opacity: 1; pointer-events: auto; }
-    .modal-nav { position: absolute; background: none; border: none; color: white; font-size: 2.5rem; cursor: pointer; top: 50%; transform: translateY(-50%); z-index: 2001; padding: 10px 20px; }
-    #prevBtn { left: 20px; }
-    #nextBtn { right: 20px; }
-    #closeBtn { position: absolute; top: 30px; right: 40px; font-size: 2rem; background: none; border: none; color: white; cursor: pointer; z-index: 2002; }
-    #modalLabel { color: white; margin-top: 20px; font-size: 1.2rem; font-weight: 600; }
+    #closeBtn { position: absolute; top: 30px; right: 40px; font-size: 2.5rem; background: none; border: none; color: white; cursor: pointer; z-index: 2002; transition: transform 0.2s; }
+    #closeBtn:hover { transform: scale(1.1); }
+    #modalLabel { color: white; margin-top: 15px; font-size: 1.2rem; font-weight: 600; letter-spacing: 1px; }
+    
+    /* 모달 이미지 및 슬라이더 설정 */
+    .modal-image-container { position: relative; width: 100%; max-width: 90%; max-height: 80vh; border-radius: 10px; overflow: hidden; }
+    #modal-slider-track { display: flex; height: 100%; transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    #modal-slider-track img { width: 100%; max-height: 80vh; object-fit: contain; flex-shrink: 0; user-select: none; }
+    
+    /* 좌우 투명 터치 영역 (화살표 대체) */
+    .touch-area { position: absolute; top: 0; height: 100%; width: 50%; z-index: 10; cursor: pointer; }
+    .touch-left { left: 0; }
+    .touch-right { right: 0; }
+    
+    /* 하단 인디케이터 (점) 디자인 */
+    #slide-indicators { display: flex; gap: 10px; margin-top: 20px; z-index: 2002; }
+    .indicator-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transition: all 0.3s ease; }
+    .indicator-dot.active { background: #fff; transform: scale(1.3); }
+
     #scrollToTopBtn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background-color: rgba(0, 0, 0, 0.7); color: white; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 100; line-height: 50px; text-align: center; }
     #scrollToTopBtn.show { display: block; opacity: 1; }
     #scrollToTopBtn:hover { background-color: black; transform: scale(1.1); }
-    
-    .modal-image-container {
-      width: 100%;
-      max-width: 90%;
-      max-height: 80vh;
-      overflow: hidden;
-      border-radius: 10px;
-    }
-    #modal-slider-track {
-      display: flex;
-      height: 100%;
-      transition: transform 0.4s ease-in-out;
-    }
-    #modal-slider-track img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
 
     @media (max-width: 768px) {
       header { border-bottom: none; }
@@ -84,10 +79,10 @@
       nav ul li a { font-size: 0.95rem; }
       main { padding: 40px 20px; }
       .fullscreen-menu .overlay-img { width: 60%; max-width: 250px; height: auto; bottom: 10vh; left: 50%; transform: translateX(-50%); right: auto; }
-.tab-menu { justify-content: center; }
+      .tab-menu { justify-content: center; }
       .tab-btn { font-size: 1.1rem; }
-      /* 모바일에서도 화살표가 보이되, 크기를 살짝 줄이고 반투명 배경을 넣어 잘 보이게 세팅 */
-      .modal-nav { display: block; font-size: 1.5rem; padding: 8px 12px; background: rgba(0,0,0,0.3); border-radius: 5px; }
+      #closeBtn { top: 20px; right: 20px; font-size: 2rem; }
+      .modal-image-container { max-width: 100%; max-height: 70vh; }
     }
   </style>
 </head>
@@ -125,7 +120,6 @@
         <button class="tab-btn" data-tab="ansan">안산점</button>
       </div>
       
-      <!-- 수원점 리스트 (33종) -->
       <div id="suwon" class="tab-content active">
         <div class="rental-gallery">
           <div class="rental-card"><img src="./assets/rental/suwon/rental1.png" alt="크림베이지" loading="lazy" /><div class="overlay-text">크림베이지</div></div>
@@ -164,7 +158,6 @@
         </div>
       </div>
 
-      <!-- 안산점 리스트 (31종) -->
       <div id="ansan" class="tab-content">
         <div class="rental-gallery">
           <div class="rental-card"><img src="./assets/rental/ansan/rental1.png" alt="크림베이지" loading="lazy" /><div class="overlay-text">크림베이지</div></div>
@@ -202,14 +195,15 @@
       </div>
       
       <div id="modal">
-        <button id="prevBtn" class="modal-nav">←</button>
+        <button id="closeBtn">✕</button>
         <div class="modal-image-container">
             <div id="modal-slider-track">
-                <!-- 자바스크립트가 여기에 img 태그들을 생성합니다. -->
-            </div>
+                </div>
+            <div class="touch-area touch-left"></div>
+            <div class="touch-area touch-right"></div>
         </div>
-        <button id="nextBtn" class="modal-nav">→</button>
-        <button id="closeBtn">✕</button>
+        <div id="slide-indicators">
+            </div>
         <div id="modalLabel"></div>
       </div>
     </main>
@@ -229,6 +223,7 @@
       const modal = document.getElementById('modal');
       const modalTrack = document.getElementById('modal-slider-track');
       const modalLabel = document.getElementById('modalLabel');
+      const indicatorsContainer = document.getElementById('slide-indicators');
       const allRentalCards = document.querySelectorAll('.rental-card');
       const tabBtns = document.querySelectorAll('.tab-btn');
       const tabContents = document.querySelectorAll('.tab-content');
@@ -254,29 +249,44 @@
       let currentImageGroup = [];
       let currentSlideIndex = 0;
 
+      function updateIndicators() {
+        const dots = document.querySelectorAll('.indicator-dot');
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentSlideIndex);
+        });
+      }
+
       function goToSlide(index) {
         if (!modalTrack) return;
         modalTrack.style.transform = `translateX(-${index * 100}%)`;
         modalLabel.textContent = currentImageGroup[index].label;
         currentSlideIndex = index;
+        updateIndicators();
       }
 
       function openModal(imageGroup, startIndex) {
         currentImageGroup = imageGroup;
         modalTrack.innerHTML = '';
+        indicatorsContainer.innerHTML = '';
 
-        imageGroup.forEach(item => {
+        imageGroup.forEach((item, index) => {
+          // 이미지 생성
           const imgElement = document.createElement('img');
           imgElement.src = item.src;
           imgElement.alt = item.label;
           modalTrack.appendChild(imgElement);
+
+          // 하단 점(Dot) 생성
+          const dot = document.createElement('div');
+          dot.className = 'indicator-dot';
+          indicatorsContainer.appendChild(dot);
         });
 
         modalTrack.style.transition = 'none';
         goToSlide(startIndex);
 
         setTimeout(() => {
-          modalTrack.style.transition = 'transform 0.4s ease-in-out';
+          modalTrack.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
         }, 50);
 
         modal.classList.add('show');
@@ -293,6 +303,16 @@
         const newIndex = (currentSlideIndex + direction + totalSlides) % totalSlides;
         goToSlide(newIndex);
       }
+
+      // 투명 터치 영역 클릭 이벤트 연결
+      document.querySelector('.touch-left').addEventListener('click', (e) => {
+        e.stopPropagation(); // 배경 클릭 이벤트 방지
+        changeSlide(-1);
+      });
+      document.querySelector('.touch-right').addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeSlide(1);
+      });
 
       tabBtns.forEach(button => {
         button.addEventListener('click', () => {
@@ -316,11 +336,11 @@
         });
       });
 
-      document.getElementById('prevBtn').onclick = () => changeSlide(-1);
-      document.getElementById('nextBtn').onclick = () => changeSlide(1);
       document.getElementById('closeBtn').onclick = closeModal;
+      
+      // 모달 바깥 배경 클릭 시 닫기
       modal.addEventListener('click', (e) => {
-        if (e.target.id === 'modal' || e.target.classList.contains('modal-image-container')) {
+        if (e.target.id === 'modal') {
           closeModal();
         }
       });
