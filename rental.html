@@ -54,7 +54,6 @@
     #scrollToTopBtn.show { display: block; opacity: 1; }
     #scrollToTopBtn:hover { background-color: black; transform: scale(1.1); }
     
-    /* ▼▼▼▼▼ CSS 수정: 슬라이더 구조를 위한 스타일 추가 ▼▼▼▼▼ */
     .modal-image-container {
       width: 100%;
       max-width: 90%;
@@ -65,15 +64,14 @@
     #modal-slider-track {
       display: flex;
       height: 100%;
-      transition: transform 0.4s ease-in-out; /* 슬라이드 애니메이션 */
+      transition: transform 0.4s ease-in-out;
     }
     #modal-slider-track img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      flex-shrink: 0; /* 이미지가 줄어들지 않도록 설정 */
+      flex-shrink: 0;
     }
-    /* ▲▲▲▲▲ CSS 수정 ▲▲▲▲▲ */
 
     @media (max-width: 768px) {
       header { border-bottom: none; }
@@ -93,7 +91,6 @@
   </style>
 </head>
 <body>
-  <!-- HTML, header, nav 등은 이전과 동일 -->
   <header>
     <div class="header-content">
       <div class="menu-icon" onclick="openMenu()">☰</div>
@@ -127,59 +124,82 @@
         <button class="tab-btn" data-tab="ansan">안산점</button>
       </div>
       
+      <!-- 수원점 리스트 (33종) -->
       <div id="suwon" class="tab-content active">
         <div class="rental-gallery">
-          <div class="rental-card"><img src="./assets/rental/suwon/rental1.png" alt="네이비" /><div class="overlay-text">네이비</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental2.png" alt="그레이" /><div class="overlay-text">그레이</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental3.png" alt="그레이 글렌체크" /><div class="overlay-text">그레이 글렌체크</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental4.png" alt="그레이 스트라이프" /><div class="overlay-text">그레이 스트라이프</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/suwon/rental5.png" alt="그레이 하운드 턱시도" /><div class="overlay-text">그레이 하운드 턱시도</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental6.png" alt="네이비 글렌체크" /><div class="overlay-text">네이비 글렌체크</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/suwon/rental7.png" alt="네이비 턱시도" /><div class="overlay-text">네이비 턱시도</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental8.png" alt="다크 네이비" /><div class="overlay-text">다크 네이비</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental9.png" alt="다크 브라운" /><div class="overlay-text">다크 브라운</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental10.png" alt="라이트 그레이" /><div class="overlay-text">라이트 그레이</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental11.png" alt="라이트 네이비" /><div class="overlay-text">라이트 네이비</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental12.png" alt="살몬핑크" /><div class="overlay-text">살몬핑크</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental13.png" alt="아이보리" /><div class="overlay-text">아이보리</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental14.png" alt="오트밀 베이지" /><div class="overlay-text">오트밀 베이지</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental15.png" alt="차콜 버드아이" /><div class="overlay-text">차콜 버드아이</div></div>
-          <div class="rental-card"><img src="./assets/rental/suwon/rental16.png" alt="차콜 윈도우체크" /><div class="overlay-text">차콜 윈도우체크</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental1.png" alt="크림베이지" loading="lazy" /><div class="overlay-text">크림베이지</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental2.png" alt="오트밀 베이지" loading="lazy" /><div class="overlay-text">오트밀 베이지</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental3.png" alt="라이트 브라운" loading="lazy" /><div class="overlay-text">라이트 브라운</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental4.png" alt="다크 브라운" loading="lazy" /><div class="overlay-text">다크 브라운</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental5.png" alt="브라운 체크" loading="lazy" /><div class="overlay-text">브라운 체크</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental6.png" alt="라이트 네이비" loading="lazy" /><div class="overlay-text">라이트 네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental7.png" alt="네이비" loading="lazy" /><div class="overlay-text">네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental8.png" alt="다크네이비" loading="lazy" /><div class="overlay-text">다크네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental9.png" alt="딥다크네이비" loading="lazy" /><div class="overlay-text">딥다크네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental10.png" alt="네이비 스트라이프" loading="lazy" /><div class="overlay-text">네이비 스트라이프</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental11.png" alt="네이비 글렌체크" loading="lazy" /><div class="overlay-text">네이비 글렌체크</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental12.png" alt="그레이 라이트" loading="lazy" /><div class="overlay-text">그레이 라이트</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental13.png" alt="그레이" loading="lazy" /><div class="overlay-text">그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental14.png" alt="그레이 스트라이프" loading="lazy" /><div class="overlay-text">그레이 스트라이프</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental15.png" alt="그레이 체크" loading="lazy" /><div class="overlay-text">그레이 체크</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental16.png" alt="그레이 윈도우체크" loading="lazy" /><div class="overlay-text">그레이 윈도우체크</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental17.png" alt="아이보리" loading="lazy" /><div class="overlay-text">아이보리</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental18.png" alt="화이트" loading="lazy" /><div class="overlay-text">화이트</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental19.png" alt="핑크" loading="lazy" /><div class="overlay-text">핑크</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental20.png" alt="차콜그레이" loading="lazy" /><div class="overlay-text">차콜그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental21.png" alt="차콜 버드아이" loading="lazy" /><div class="overlay-text">차콜 버드아이</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental22.png" alt="블랙" loading="lazy" /><div class="overlay-text">블랙</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental23.png" alt="요크셔 차콜그레이" loading="lazy" /><div class="overlay-text">요크셔 차콜그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental24.png" alt="요크셔 다크네이비" loading="lazy" /><div class="overlay-text">요크셔 다크네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental25.png" alt="스카발 차콜그레이" loading="lazy" /><div class="overlay-text">스카발 차콜그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental26.png" alt="스카발 다크네이비" loading="lazy" /><div class="overlay-text">스카발 다크네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental27.png" alt="프리미엄 차콜그레이" loading="lazy" /><div class="overlay-text">프리미엄 차콜그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental28.png" alt="프리미엄 다크네이비" loading="lazy" /><div class="overlay-text">프리미엄 다크네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental29.png" alt="하운드 턱시도" loading="lazy" /><div class="overlay-text">하운드 턱시도</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental30.png" alt="네이비 턱시도" loading="lazy" /><div class="overlay-text">네이비 턱시도</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental31.png" alt="블랙 턱시도" loading="lazy" /><div class="overlay-text">블랙 턱시도</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental32.png" alt="혼주복 차콜그레이" loading="lazy" /><div class="overlay-text">혼주복 차콜그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/suwon/rental33.png" alt="혼주복 다크네이비" loading="lazy" /><div class="overlay-text">혼주복 다크네이비</div></div>
         </div>
       </div>
 
+      <!-- 안산점 리스트 (31종) -->
       <div id="ansan" class="tab-content">
         <div class="rental-gallery">
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental1.png" alt="그레이" /><div class="overlay-text">네이비</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental2.png" alt="네이비" /><div class="overlay-text">네이비</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental3.png" alt="그레이 더블 턱시도" /><div class="overlay-text">그레이 더블 턱시도</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental4.png" alt="그레이 더블체크" /><div class="overlay-text">그레이 더블체크</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental5.png" alt="그린체크" /><div class="overlay-text">그린체크</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental6.png" alt="깅엄 턱시도" /><div class="overlay-text">깅엄 턱시도</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental7.png" alt="다크 네이비 더블" /><div class="overlay-text">다크 네이비 더블</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental8.png" alt="다크 네이비 더블 스트라이프" /><div class="overlay-text">다크 네이비 더블 스트라이프</div></div>
-          <div class="rental-card"><img src="./assets/rental/ansan/rental9.png" alt="다크 네이비 스트라이프" /><div class="overlay-text">다크 네이비 스트라이프</div></div>
-          <div class="rental-card"><img src="./assets/rental/ansan/rental10.png" alt="다크 브라운" /><div class="overlay-text">다크 브라운</div></div>
-          <div class="rental-card"><img src="./assets/rental/ansan/rental11.png" alt="라이트 그레이" /><div class="overlay-text">라이트 그레이</div></div>
-          <div class="rental-card"><img src="./assets/rental/ansan/rental12.png" alt="버건디" /><div class="overlay-text">버건디</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental13.png" alt="베이지" /><div class="overlay-text">베이지</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental14.png" alt="보검 턱시도" /><div class="overlay-text">보검 턱시도</div></div>
-          <div class="rental-card"><img src="./assets/rental/ansan/rental15.png" alt="브라운 글렌체크" /><div class="overlay-text">브라운 글렌체크</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental16.png" alt="블랙" /><div class="overlay-text">블랙</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental17.png" alt="블랙숄 턱시도" /><div class="overlay-text">블랙숄 턱시도</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental18.png" alt="블랙피크드 턱시도" /><div class="overlay-text">블랙피크드 턱시도</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental19.png" alt="블루" /><div class="overlay-text">블루</div></div>
-          <div class="rental-card"><img src="./assets/rental/ansan/rental20.png" alt="살몬핑크" /><div class="overlay-text">살몬핑크</div></div>
-          <div class="rental-card"><img src="./assets/rental/ansan/rental21.png" alt="카키" /><div class="overlay-text">카키</div></div>
-          <div class="rental-card"><img src="./assets/rental/ansan/rental22.png" alt="코발트" /><div class="overlay-text">코발트</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental23.png" alt="콤비체크" /><div class="overlay-text">콤비체크</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental24.png" alt="화이트 더블" /><div class="overlay-text">화이트 더블</div></div>
-          <div class="rental-card"><img src="./assets/rental/ansan/rental25.png" alt="화이트 스트라이프" /><div class="overlay-text">화이트 스트라이프</div></div>
-          <div class="rental-card" data-image-count="1"><img src="./assets/rental/ansan/rental26.png" alt="화이트피크드 턱시도" /><div class="overlay-text">화이트피크드 턱시도</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental1.png" alt="크림베이지" loading="lazy" /><div class="overlay-text">크림베이지</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental2.png" alt="베이지" loading="lazy" /><div class="overlay-text">베이지</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental3.png" alt="브라운 라이트" loading="lazy" /><div class="overlay-text">브라운 라이트</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental4.png" alt="브라운 다크" loading="lazy" /><div class="overlay-text">브라운 다크</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental5.png" alt="체크 브라운" loading="lazy" /><div class="overlay-text">체크 브라운</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental6.png" alt="네이비" loading="lazy" /><div class="overlay-text">네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental7.png" alt="신 네이비" loading="lazy" /><div class="overlay-text">신 네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental8.png" alt="네이비 더블" loading="lazy" /><div class="overlay-text">네이비 더블</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental9.png" alt="스트라이프 네이비" loading="lazy" /><div class="overlay-text">스트라이프 네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental10.png" alt="스트라이프 네이비 더블" loading="lazy" /><div class="overlay-text">스트라이프 네이비 더블</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental11.png" alt="그레이 라이트" loading="lazy" /><div class="overlay-text">그레이 라이트</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental12.png" alt="그레이" loading="lazy" /><div class="overlay-text">그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental13.png" alt="신 그레이" loading="lazy" /><div class="overlay-text">신 그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental14.png" alt="그레이 체크 더블" loading="lazy" /><div class="overlay-text">그레이 체크 더블</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental15.png" alt="블랙" loading="lazy" /><div class="overlay-text">블랙</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental16.png" alt="체크 콤비" loading="lazy" /><div class="overlay-text">체크 콤비</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental17.png" alt="화이트더블" loading="lazy" /><div class="overlay-text">화이트더블</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental18.png" alt="스트라이프 화이트" loading="lazy" /><div class="overlay-text">스트라이프 화이트</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental19.png" alt="핑크" loading="lazy" /><div class="overlay-text">핑크</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental20.png" alt="와인" loading="lazy" /><div class="overlay-text">와인</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental21.png" alt="카키" loading="lazy" /><div class="overlay-text">카키</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental22.png" alt="체크 그린" loading="lazy" /><div class="overlay-text">체크 그린</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental23.png" alt="코발트" loading="lazy" /><div class="overlay-text">코발트</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental24.png" alt="프리미엄 차콜그레이" loading="lazy" /><div class="overlay-text">프리미엄 차콜그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental25.png" alt="프리미엄 다크네이비" loading="lazy" /><div class="overlay-text">프리미엄 다크네이비</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental26.png" alt="턱시도 깅엄체크" loading="lazy" /><div class="overlay-text">턱시도 깅엄체크</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental27.png" alt="턱시도 더블그레이" loading="lazy" /><div class="overlay-text">턱시도 더블그레이</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental28.png" alt="턱시도 보검" loading="lazy" /><div class="overlay-text">턱시도 보검</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental29.png" alt="턱시도 블랙" loading="lazy" /><div class="overlay-text">턱시도 블랙</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental30.png" alt="턱시도 블랙숄" loading="lazy" /><div class="overlay-text">턱시도 블랙숄</div></div>
+          <div class="rental-card"><img src="./assets/rental/ansan/rental31.png" alt="턱시도 화이트" loading="lazy" /><div class="overlay-text">턱시도 화이트</div></div>
         </div>
       </div>
       
-      <!-- ▼▼▼▼▼ HTML 수정: 모달 내부 구조 변경 ▼▼▼▼▼ -->
       <div id="modal">
         <button id="prevBtn" class="modal-nav">←</button>
         <div class="modal-image-container">
@@ -191,7 +211,6 @@
         <button id="closeBtn">✕</button>
         <div id="modalLabel"></div>
       </div>
-      <!-- ▲▲▲▲▲ HTML 수정 ▲▲▲▲▲ -->
     </main>
   </div>
   <button id="scrollToTopBtn" title="최상단으로 이동">↑</button>
@@ -201,14 +220,13 @@
     주소 : 경기 안산시 단원구 이삭로38 1층  |  문의 : 031-414-2587  |  이메일 : vaniabespoke@naver.com
   </footer>
 
-  <!-- ▼▼▼▼▼ SCRIPT 전체 로직 수정 ▼▼▼▼▼ -->
   <script>
     function openMenu() { document.getElementById("fullscreenMenu")?.classList.add("active"); }
     function closeMenu() { document.getElementById("fullscreenMenu")?.classList.remove("active"); }
     
     document.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById('modal');
-      const modalTrack = document.getElementById('modal-slider-track'); // 수정
+      const modalTrack = document.getElementById('modal-slider-track');
       const modalLabel = document.getElementById('modalLabel');
       const allRentalCards = document.querySelectorAll('.rental-card');
       const tabBtns = document.querySelectorAll('.tab-btn');
@@ -235,7 +253,6 @@
       let currentImageGroup = [];
       let currentSlideIndex = 0;
 
-      // 슬라이드를 특정 위치로 이동시키는 함수
       function goToSlide(index) {
         if (!modalTrack) return;
         modalTrack.style.transform = `translateX(-${index * 100}%)`;
@@ -245,9 +262,8 @@
 
       function openModal(imageGroup, startIndex) {
         currentImageGroup = imageGroup;
-        modalTrack.innerHTML = ''; // 트랙 초기화
+        modalTrack.innerHTML = '';
 
-        // 모든 이미지를 트랙에 추가
         imageGroup.forEach(item => {
           const imgElement = document.createElement('img');
           imgElement.src = item.src;
@@ -255,11 +271,9 @@
           modalTrack.appendChild(imgElement);
         });
 
-        // 애니메이션 없이 시작 위치로 즉시 이동
         modalTrack.style.transition = 'none';
         goToSlide(startIndex);
 
-        // 약간의 딜레이 후 애니메이션 다시 활성화 (깜빡임 방지)
         setTimeout(() => {
           modalTrack.style.transition = 'transform 0.4s ease-in-out';
         }, 50);
