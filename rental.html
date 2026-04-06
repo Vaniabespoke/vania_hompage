@@ -324,7 +324,10 @@
           const base = src.substring(0, src.lastIndexOf('.png'));
           
           // 이미지가 1장인지 2장인지 판단 (data-image-count="1" 속성이 있으면 1장, 없으면 기본 2장)
-          const count = card.hasAttribute('data-image-count') ? 1 : 2;
+          let count = 3; 
+          if (card.hasAttribute('data-image-count')) {
+           count = parseInt(card.getAttribute('data-image-count'), 10);
+          }
           
           const cardImages = [];
           for (let i = 0; i < count; i++) {
